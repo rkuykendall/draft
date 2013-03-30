@@ -12,3 +12,5 @@
 */
 
 Route::get('/', "HomeController@showWelcome");
+Route::get('league/{id}-{slug?}', 'LeagueController@getView');
+Route::controller('league', 'LeagueController');
