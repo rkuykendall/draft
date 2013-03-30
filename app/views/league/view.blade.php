@@ -1,7 +1,7 @@
 <h1>{{{ $league->name }}}</h1>
 <div class="row">
 	<div class="span8">
-		content!
+		<h2>Players</h2>
 	</div>
 	<div class="span4">
 		<small class="muted">About</small>

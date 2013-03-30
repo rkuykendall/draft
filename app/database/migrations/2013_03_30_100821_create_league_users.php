@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsers extends Migration {
+class CreateLeagueUsers extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,11 @@ class CreateUsers extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('users', function(Blueprint $table) {
+		Schema::create('league_user', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('username', 24);
-			$table->string('displayname')->nullable();
+			$table->integer('league_id')->unsigned();
+			$table->integer('user_id')->unsigned();
+			$table->boolean('player')->default(true);
 			$table->boolean('admin');
 			$table->timestamps();
 		});
@@ -28,7 +29,7 @@ class CreateUsers extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('league_user');
 	}
 
 }
