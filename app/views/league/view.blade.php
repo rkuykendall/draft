@@ -24,7 +24,7 @@
 		<ul>
 			@foreach($league->movies as $movie)
 				<li>
-					{{{ $movie->name }}} <small class="muted">({{{ $movie->release }}})</small>
+					{{{ $movie->name }}} <small class="muted">({{{ $movie->release->format("F j, Y") }}})</small>
 				</li>
 			@endforeach
 		</ul>
