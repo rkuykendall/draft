@@ -10,7 +10,11 @@ class User extends Eloquent implements UserInterface {
 		return $this->belongsToMany('League')->withPivot('player', 'admin')->withTimestamps();
 	}
 
+	/* Accessors & Mutators (aka. fancy words for getters and setters) */
 
+	public function getDisplaynameAttribute($value) {
+		return $value ?: '@'.$this->username;
+	}
 
 	/* UserInterface */
 

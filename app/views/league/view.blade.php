@@ -2,12 +2,31 @@
 <div class="row">
 	<div class="span8">
 		<h2>Players</h2>
+		<ol>
+			@foreach($league->players as $player)
+				<li class="player">
+					<h3>{{{ $player->displayname }}}</h3>
+					<span class="player-money">Total: $0</span>
+					<p>Movies: None</p>
+				</li>
+			@endforeach
+		</ol>
 	</div>
 	<div class="span4">
 		<small class="muted">About</small>
 		<div>
 			{{ $league->description }}
 		</div>
-		<i class="icon-link"></i> <a href="{{{ $league->url }}}">{{{ $league->url }}}</a>
+		<p><i class="icon-link"></i> <a href="{{{ $league->url }}}" target="_blank">{{{ $league->url }}}</a></p>
+		<h3>League Settings</h3>
+		<p><span class="muted">End date:</span> {{{ $league->end_date->format("F j, Y") }}}</p>
+		<h3>Movies</h3>
+		<ul>
+			@foreach($league->movies as $movie)
+				<li>
+					{{{ $movie->name }}} <small class="muted">({{{ $movie->release }}})</small>
+				</li>
+			@endforeach
+		</ul>
 	</div>
 </div>

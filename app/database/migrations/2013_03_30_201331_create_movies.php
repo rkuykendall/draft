@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLeague extends Migration {
+class CreateMovies extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,12 @@ class CreateLeague extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('leagues', function(Blueprint $table)
+		Schema::create('movies', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('name');
-			$table->string('slug');
-			$table->text('description');
-			$table->text('url');
-			$table->date('end_date');
+			$table->string('boxmojo_id');
+			$table->date('release');
 			$table->timestamps();
 		});
 	}
@@ -31,7 +29,7 @@ class CreateLeague extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('leagues');
+		Schema::drop('movies');
 	}
 
 }

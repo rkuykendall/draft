@@ -2,6 +2,8 @@
 
 class UserSeeder extends Seeder {
 	public function run() {
+		DB::table("users")->delete();
+
 		$users = array(
 			array(
 				'id' => '1',

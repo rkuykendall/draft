@@ -12,6 +12,7 @@ class LeagueSeeder extends Seeder {
 <p>It's back, bitches!</p>
 EOL;
 		$leagueData['url'] = 'http://draft.nsfwshow.com/';
+		$leagueData['end_date'] = '2013-09-20';
 
 		League::create($leagueData);
 	}

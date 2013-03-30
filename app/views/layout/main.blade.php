@@ -10,6 +10,7 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width">
 
+		<link href='http://fonts.googleapis.com/css?family=Oxygen:400,700' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="{{ asset("css/bootstrap-combined.no-icons.min.css") }}">
 		<link rel="stylesheet" href="{{ asset("css/font-awesome.min.css") }}">
 		<link rel="stylesheet" href="{{ asset("css/main.css") }}">

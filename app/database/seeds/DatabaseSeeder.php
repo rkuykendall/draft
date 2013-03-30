@@ -13,6 +13,9 @@ class DatabaseSeeder extends Seeder {
 
 		$this->call('UserSeeder');
 		$this->call('LeagueSeeder');
+		$this->call('LeagueUsersSeeder');
+		$this->call('MovieSeeder');
+		$this->call('LeagueMovieSeeder');
 	}
 
 }
