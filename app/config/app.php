@@ -113,6 +113,8 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
+		'Former\FormerServiceProvider',
+		'Krucas\Notification\NotificationServiceProvider',
 		'Profiler\ProfilerServiceProvider',
 	),
 
@@ -157,12 +159,14 @@ return array(
 		'Event'           => 'Illuminate\Support\Facades\Event',
 		'File'            => 'Illuminate\Support\Facades\File',
 		'Form'            => 'Illuminate\Support\Facades\Form',
+		'Former'          => 'Former\Facades\Illuminate',
 		'Hash'            => 'Illuminate\Support\Facades\Hash',
 		'Html'            => 'Illuminate\Support\Facades\Html',
 		'Input'           => 'Illuminate\Support\Facades\Input',
 		'Lang'            => 'Illuminate\Support\Facades\Lang',
 		'Log'             => 'Illuminate\Support\Facades\Log',
 		'Mail'            => 'Illuminate\Support\Facades\Mail',
+		'Notification'    => 'Krucas\Notification\Facades\Notification',
 		'Paginator'       => 'Illuminate\Support\Facades\Paginator',
 		'Password'        => 'Illuminate\Support\Facades\Password',
 		'Profiler'        => 'Profiler\Facades\Profiler',

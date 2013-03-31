@@ -16,6 +16,7 @@ class CreateUsers extends Migration {
 			$table->increments('id');
 			$table->string('username', 24);
 			$table->string('displayname')->nullable();
+			$table->string('email', 255);
 			$table->boolean('admin');
 			$table->timestamps();
 		});

@@ -11,6 +11,16 @@
 |
 */
 
+// Home
 Route::get('/', "HomeController@showWelcome");
+Route::post('login', array('before' => 'csrf',
+	'uses' => "HomeController@showLogin"));
+Route::post('logout', array('before' => 'csrf',
+	'uses' => "HomeController@showLogout"));
+Route::get('register', "HomeController@getRegister");
+Route::post('register', array('before' => 'csrf',
+	'uses' => "HomeController@postRegister"));
+
+
 Route::get('league/{id}-{slug?}', 'LeagueController@getView');
 Route::controller('league', 'LeagueController');

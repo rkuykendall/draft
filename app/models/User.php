@@ -13,7 +13,7 @@ class User extends Eloquent implements UserInterface {
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */
 
 	public function getDisplaynameAttribute($value) {
-		return $value ?: '@'.$this->username;
+		return $value ?: $this->username;
 	}
 
 	/* UserInterface */

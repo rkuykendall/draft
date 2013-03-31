@@ -17,12 +17,12 @@
 
 		<script src="{{ asset("js/vendor/modernizr-2.6.2-respond-1.1.0.min.js") }}"></script>
 	</head>
-	<body>
+	<body{{ (isset($javascript[0]) ? " data-controller=\"{$javascript[0]}\"" : null).(isset($javascript[1]) ? " data-action=\"{$javascript[1]}\"" : null).(Auth::check() ? ' data-user="'.Auth::user()->email.'"' : null) }} data-url="{{ url('/') }}" data-csrf="{{ Session::getToken() }}">
 		<!--[if lt IE 7]>
 			<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 		<![endif]-->
 
-		<div class="navbar navbar-inverse">
+		<div class="navbar navbar-static-top navbar-inverse">
 			<div class="navbar-inner">
 				<div class="container">
 					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -30,11 +30,18 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</a>
-					<a class="brand" href="{{ url('/') }}">Draftr</a>
+					<a class="brand" href="{{ url('/') }}">Draftr <sup>&alpha;</sup></a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li {{ Request::is('/') ? 'class="active"' : null}}><a href="{{ url('/') }}">Home</a></li>
+							<li{{ Request::is('/') ? ' class="active"' : null}}><a href="{{ url('/') }}">Home</a></li>
 						</ul>
+						<div class="navbar-text user pull-right">
+							@if(Auth::check())
+								Hello {{ Auth::user()->displayname }}
+							@else
+								<a id="js-login" class="persona-button dark" href="#"><span>Sign in with Persona</span></a><span id="js-login-status" style="display: none;"></span>
+							@endif
+						</div>
 					</div><!--/.nav-collapse -->
 				</div>
 			</div>
@@ -53,6 +60,7 @@
 
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="{{ asset("js/vendor/jquery-1.9.1.min.js") }}"><\/script>')</script>
+		<script src="https://login.persona.org/include.js"></script>
 
 		<script src="{{ asset("js/vendor/bootstrap.min.js") }}"></script>
 

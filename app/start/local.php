@@ -5,3 +5,9 @@ App::missing(function($exception) {
 	$layout->content = View::make("errors.404");
 	return Response::make($layout, 404);
 });
+
+View::composer("layout.main", function ($view) {
+	if(!isset($view->javascript)) {
+		$view->javascript = array();
+	}
+});
