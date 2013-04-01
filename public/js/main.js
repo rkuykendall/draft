@@ -52,7 +52,7 @@ DRAFTR = {
 			// Login
 			$('#js-login').click(function () {
 				$('#js-login').hide()
-				$('#js-login-status').fadeIn(500).html('<i class="icon-spinner icon-spin"></i> Waiting on user...')
+				$('#js-login-status').fadeIn(1000).html('<i class="icon-spinner icon-spin"></i> Waiting on user...')
 				navigator.id.request({
 					siteName: 'Draftr',
 					oncancel: function () {
