@@ -7,7 +7,16 @@
 				<li class="player">
 					<h3>{{{ $player->displayname }}}</h3>
 					<span class="player-money">Total: $0</span>
-					<p>Movies: None</p>
+					@if(count($player->movies) > 0)
+<?php
+$movieNames = $player->movies->map(function($movie) {
+	return e($movie->name);
+});
+echo '<p>Movies: '.implode(', ', $movieNames).'</p>';
+?>
+					@else
+						<p>Movies: None</p>
+					@endif
 				</li>
 			@endforeach
 		</ol>

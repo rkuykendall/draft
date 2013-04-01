@@ -9,6 +9,13 @@ class User extends Eloquent implements UserInterface {
 	public function leagues() {
 		return $this->belongsToMany('League')->withPivot('player', 'admin')->withTimestamps();
 	}
+	public function movies() {
+		// Only if called via league
+		if(!$this->pivot or $this->pivot->getTable() != "league_user") {
+			return $this->belongsToMany('Movie', 'league_movie_user');
+		}
+		return $this->belongsToMany('Movie', 'league_movie_user')->withPivot('league_id')->where('league_id', $this->pivot->league_id);
+	}
 
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */
 
