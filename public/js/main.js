@@ -34,19 +34,21 @@ DRAFTR = {
 					});
 				},
 				onlogout: function () {
-					$.ajax({
-						type: 'POST',
-						url: DRAFTR.config.url+'/logout',
-						data: {
-							"_token": DRAFTR.config.csrf
-						},
-						success: function () {
-							window.location.reload()
-						},
-						error: function () {
-							window.location.reload()
-						}
-					});
+					setTimeout(function() { // http://stackoverflow.com/a/15623312/211088
+						$.ajax({
+							type: 'POST',
+							url: DRAFTR.config.url+'/logout',
+							data: {
+								"_token": DRAFTR.config.csrf
+							},
+							success: function () {
+								window.location.reload()
+							},
+							error: function () {
+								window.location.reload()
+							}
+						});
+					}, 1000);
 				}
 			});
 			// Login
