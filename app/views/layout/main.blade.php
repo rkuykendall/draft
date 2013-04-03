@@ -53,7 +53,7 @@
 			<hr>
 
 			<footer>
-				<p>Draftr 2013</p>
+				<p>Draftr 2013 - <i class="icon-heart-empty"></i> <a href="https://github.com/t2t2/draft" target="_blank">opensource</a> - Powered by unicorns and <a href="http://www.laravel.com/" target="_blank">Laravel 4</a></p>
 			</footer>
 
 		</div> <!-- /container -->
