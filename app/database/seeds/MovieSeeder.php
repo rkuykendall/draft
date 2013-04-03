@@ -4,6 +4,7 @@ class MovieSeeder extends Seeder {
 	public function run() {
 		$movies = array(
 			array("name" => "Oblivion", "boxmojo_id" => "oblivion", "release" => new DateTime("4/19/2013")),
+			array("name" => "Pain and Gain", "boxmojo_id" => "painandgain", "release" => new DateTime("4/26/2013")),
 			array("name" => "Iron Man 3", "boxmojo_id" => "ironman3", "release" => new DateTime("5/3/2013")),
 			array("name" => "The Great Gatsby", "boxmojo_id" => "greatgatsby2012", "release" => new DateTime("5/10/2013")),
 			array("name" => "Star Trek Into Darkness", "boxmojo_id" => "startrek12", "release" => new DateTime("5/17/2013")),
@@ -13,8 +14,8 @@ class MovieSeeder extends Seeder {
 			array("name" => "Now You See Me", "boxmojo_id" => "nowyouseeme", "release" => new DateTime("5/31/2013")),
 			array("name" => "After Earth", "boxmojo_id" => "1000ae", "release" => new DateTime("6/7/2013")),
 			array("name" => "The Internship", "boxmojo_id" => "internship", "release" => new DateTime("6/7/2013")),
+			array("name" => "This is the End", "boxmojo_id" => "rogenhilluntitled", "release" => new DateTime("6/12/2013")),
 			array("name" => "Man of Steel", "boxmojo_id" => "superman2012", "release" => new DateTime("6/14/2013")),
-			array("name" => "This is the End", "boxmojo_id" => "rogenhilluntitled", "release" => new DateTime("6/14/2013")),
 			array("name" => "Monsters University", "boxmojo_id" => "monstersinc2", "release" => new DateTime("6/21/2013")),
 			array("name" => "World War Z", "boxmojo_id" => "worldwarz", "release" => new DateTime("6/21/2013")),
 			array("name" => "White House Down", "boxmojo_id" => "whitehousedown", "release" => new DateTime("6/28/2013")),
