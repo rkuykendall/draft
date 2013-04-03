@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class AddLeagueSettings extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::table('leagues', function(Blueprint $table)
+		{
+			$table->string('mode', 32)->after('url');
+			$table->string('units', 16)->after('mode');
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::table('leagues', function($table)
+		{
+			$table->dropColumns('mode', 'units');
+		});
+	}
+
+}

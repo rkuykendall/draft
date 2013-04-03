@@ -8,4 +8,7 @@ class Movie extends Eloquent {
 		return new DateTime($value);
 	}
 
+	public function grabLeaguePivot($lmovie) {
+		$this->setRelation("lpivot", $lmovie->pivot);
+	}
 }
