@@ -27,7 +27,7 @@ $app = new Illuminate\Foundation\Application;
 $env = $app->detectEnvironment(array(
 
 	'production' => array('draft.t2t2.eu'),
-	'local' => array('t2t2', 'draft.dev'),
+	'local' => array('t2t2', '*.dev'),
 
 ));
 
