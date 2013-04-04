@@ -4,7 +4,8 @@
 		"loic-sharma/profiler": "1.0.*",
 		"guzzle/guzzle": "~3.1.1",
 		"anahkiasen/former": "dev-agnostic",
-		"edvinaskrucas/notification": "1.0"
+		"edvinaskrucas/notification": "1.*",
+		"barryvdh/laravel-ide-helper": "dev-master"
 	},
 	"require-dev": {
 		"raveren/kint": "dev-master"
