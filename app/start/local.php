@@ -10,4 +10,7 @@ View::composer("layout.main", function ($view) {
 	if(!isset($view->javascript)) {
 		$view->javascript = array();
 	}
+	if(!isset($view->content)) {
+		$view->content = array();
+	}
 });

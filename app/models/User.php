@@ -32,7 +32,7 @@ class User extends Eloquent implements UserInterface {
 
 	public function getAuthPassword()
 	{
-		return null;
+		return Hash::make("moz:persona");
 	}
 
 }

@@ -5,7 +5,7 @@
 </div>
 <div class="row">
 	<div class="span8">
-		{{ Former::horizontal_open() }}
+		{{ Former::horizontal_open("register")->rules($register_rules) }}
 			{{ Former::token() }}
 			{{ Former::medium_text("username") }}
 			{{ Former::xlarge_text("displayname", "Display Name") }}
@@ -22,9 +22,9 @@
 	<div class="span4">
 		<h2>Already in a league tracked by us?</h2>
 		<p>Due to way databases work we have made a dummy account to track your stats. These dummy accounts are linked to approtiate twitter usernames. If you wish to claim ownership of the account, find it by username:</p>
-		{{ Former::inline_open() }}
+		{{ Former::inline_open("ajax/claim") }}
 			{{ Former::token() }}
-			{{ Former::text("username") }}
+			{{ Former::text("username")->forceValue("") }}
 			{{ Former::submit("Search") }}
 		{{ Former::close() }}
 	</div>

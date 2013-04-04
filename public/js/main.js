@@ -41,8 +41,13 @@ DRAFTR = {
 							data: {
 								"_token": DRAFTR.config.csrf
 							},
-							success: function () {
-								window.location.reload()
+							success: function (response) {
+								if(response.refresh) {
+									window.location.reload()
+								}
+								if(response.redirect) {
+									window.location = response.redirect
+								}
 							},
 							error: function () {
 								window.location.reload()
@@ -67,6 +72,12 @@ DRAFTR = {
 				});
 				return;
 			});
+			$('#js-logout').click(function () {
+				$('#js-user').hide()
+				$('#js-logout-status').fadeIn(1000).html('<i class="icon-spinner icon-spin"></i> Logging out...')
+				navigator.id.logout();
+				return;
+			});
 		}
 	},
 
@@ -80,10 +91,6 @@ DRAFTR = {
 			}).on("click", function () {
 				return false;
 			});
-		},
-
-		show: function() {
-			// action-specific code
 		}
 	}
 }; /* DRAFTR */

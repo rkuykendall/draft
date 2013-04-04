@@ -116,6 +116,7 @@ return array(
 		'Former\FormerServiceProvider',
 		'Krucas\Notification\NotificationServiceProvider',
 		'Profiler\ProfilerServiceProvider',
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 	),
 
 	/*

@@ -37,9 +37,19 @@
 						</ul>
 						<div class="navbar-text user pull-right">
 							@if(Auth::check())
-								Hello {{ Auth::user()->displayname }}
+								<ul class="nav">
+									<li class="dropdown">
+										<a href="#" id="js-user" class="dropdown-toggle" data-toggle="dropdown">
+											Hello {{ Auth::user()->displayname }} <b class="caret"></b>
+										</a>
+										<span id="js-logout-status" class="navbar-text" style="display: none;"></span>
+										<ul class="dropdown-menu">
+											<li><a href="#" id="js-logout">Logout</a></li>
+										</ul>
+									</li>
+								</ul>
 							@else
-								{{-- <a id="js-login" class="persona-button dark" href="#"><span>Sign in with Persona</span></a><span id="js-login-status" style="display: none;"></span> --}}
+								<a id="js-login" class="persona-button dark" href="#"><span>Sign in with Persona</span></a><span id="js-login-status" style="display: none;"></span>
 							@endif
 						</div>
 					</div><!--/.nav-collapse -->
@@ -48,6 +58,8 @@
 		</div>
 
 		<div class="container">
+			{{ Notification::showAll() }}
+
 			{{ $content }}
 
 			<hr>

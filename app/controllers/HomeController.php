@@ -11,6 +11,7 @@ class HomeController extends BaseController {
 		));
 	}
 
+	// Login & Logout
 	public function showLogin() {
 		if(!Auth::guest()) {
 			Auth::logout();
@@ -28,12 +29,12 @@ class HomeController extends BaseController {
 			App::abort(401, 'You are not authorized.');
 		}
 		$verification = $response->json();
-		if(!$verification['status'] == "okay") {
+		if($verification['status'] != "okay") {
 			App::abort(401, 'You are not authorized.');
 		}
 		$email = $verification["email"];
 		// Login on laravel
-		if(Auth::attempt(array("email" => $email))) {
+		if(Auth::attempt(array("email" => $email, "password" => "moz:persona"), true)) {
 			if(Request::ajax()) {
 				return Response::json(array("refresh" => true));
 			} else {
@@ -45,7 +46,7 @@ class HomeController extends BaseController {
 			if(Request::ajax()) {
 				return Response::json(array("redirect" => url("register")));
 			} else {
-				return Redirect::back();
+				return Redirect::to("register");
 			}
 		}
 	}
@@ -61,8 +62,10 @@ class HomeController extends BaseController {
 		}
 	}
 
+	// Registration
 	public $register_valid_rules = array(
-		'username' => array('required', 'unique:users', 'min:2', 'max:15')
+		'username' => 'required|unique:users|min:2|max:15',
+		'displayname' => 'max:64'
 	);
 
 	public function getRegister() {
@@ -70,6 +73,7 @@ class HomeController extends BaseController {
 			return Redirect::to("/");
 		}
 		if(!Session::has("register_email")) {
+			Notification::error("Session expired, we might get a fresh one by the browser...");
 			return Redirect::to("/");
 		}
 		$email = Session::get("register_email");
@@ -78,8 +82,35 @@ class HomeController extends BaseController {
 		$fakeuser->displayname = "New User";
 		$fakeuser->email = $email;
 		Auth::setUser($fakeuser);
-		$this->layout->content = View::make("register");
+		$this->layout->content = View::make("register", array("register_rules" => $this->register_valid_rules));
 		$this->layout->javascript = array("register");
 	}
+	public function postRegister($value='') {
+		if(!Auth::guest()) {
+			return Redirect::to("/");
+		}
+		if(!Session::has("register_email")) {
+			Notification::error("Session expired, we might get a fresh one by the browser...");
+			return Redirect::to("/");
+		}
 
+		$validator = Validator::make(Input::all(), $this->register_valid_rules);
+		if ($validator->fails()) {
+			Notification::error("Something's wrong, check the fields bellow!");
+			return Redirect::to("register")->withInput()->withErrors($validator);
+		}
+		// Create user
+		$user = new User();
+		$user->username = Input::get("username");
+		$user->displayname = Input::get("displayname");
+		$user->email = Session::get("register_email");
+		if($user->save()) {
+			Auth::login($user, true);
+			Notification::success("Welcome {$user->displayname}!");
+			return Redirect::to("/");
+		} else {
+			Notification::error("Save errors :'(");
+			return Redirect::to("register")->withInput();
+		}
+	}
 }
