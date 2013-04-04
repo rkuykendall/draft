@@ -11,6 +11,13 @@
 |
 */
 
+/*
+ * HEY! Before editing this!
+ *
+ * If you were planning to add a route that Brian missaid on air, DON'T.
+ * This file would grow to 3 MB.
+ */
+
 // Home
 Route::get('/', "HomeController@showWelcome");
 Route::post('login', array('before' => 'csrf',

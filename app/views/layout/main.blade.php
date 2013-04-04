@@ -6,7 +6,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>Draftr</title>
+		<title>{{{ isset($title) ? $title.' | ' : null }}}Draftr</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width">
 
@@ -57,7 +57,7 @@
 			</div>
 		</div>
 
-		<div class="container">
+		<div id="content" class="container">
 			{{ Notification::showAll() }}
 
 			{{ $content }}

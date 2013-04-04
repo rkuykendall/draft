@@ -24,6 +24,7 @@ class LeagueController extends BaseController {
 			}));
 		});
 
+		$this->layout->title = $league->name;
 		$this->layout->content = View::make("league.view", array(
 			'league' => $league,
 		));

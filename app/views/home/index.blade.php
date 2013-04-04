@@ -3,7 +3,7 @@
 		<h2>Tracked Leagues</h2>
 		<ol>
 			@foreach($leagues as $league)
-				<li><a href="{{ url("league", array($league->id.'-'.$league->slug)) }}">{{{ $league->name }}}</a></li>
+				<li><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">{{{ $league->name }}}</a></li>
 			@endforeach
 		</ol>
    </div>

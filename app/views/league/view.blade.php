@@ -1,4 +1,9 @@
-<h1>{{{ $league->name }}}</h1>
+<div class="hero-unit">
+	<h1>{{{ $league->name }}}</h1>
+</div>
+<ul class="nav nav-tabs">
+	<li{{ Route::currentRouteAction() == "LeagueController@getView" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">Home</a></li>
+</ul>
 <div class="row">
 	<div class="span8">
 		<h2>Players</h2>

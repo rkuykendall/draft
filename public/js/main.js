@@ -4,6 +4,11 @@ DRAFTR = {
 		init: function() {
 			// Load config
 			DRAFTR.config = $(document.body).data()
+			// Pants check
+			if(location.hostname.endsWith(".dev")) {
+				document.title = "[DEV] "+document.title
+			}
+
 			// Persona
 			navigator.id.watch({
 				loggedInUser: (DRAFTR.config.user ? DRAFTR.config.user : null),

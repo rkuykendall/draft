@@ -11,6 +11,6 @@ View::composer("layout.main", function ($view) {
 		$view->javascript = array();
 	}
 	if(!isset($view->content)) {
-		$view->content = array();
+		$view->content = "";
 	}
 });
