@@ -21,11 +21,6 @@
 	</div>
 	<div class="span4">
 		<h2>Already in a league tracked by us?</h2>
-		<p>Due to way databases work we have made a dummy account to track your stats. These dummy accounts are linked to approtiate twitter usernames. If you wish to claim ownership of the account, find it by username:</p>
-		{{ Former::inline_open("ajax/claim") }}
-			{{ Former::token() }}
-			{{ Former::text("username")->forceValue("") }}
-			{{ Former::submit("Search") }}
-		{{ Former::close() }}
+		<p>Due to way databases work we have made a dummy account to track your stats. If you wish to claim ownership of the account, please contact <a href="mailto:{{ Config::get("app.admin_email") }}">site admin</a>.</p>
 	</div>
 </div>
