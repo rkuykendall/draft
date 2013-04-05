@@ -34,6 +34,24 @@
 					<div class="nav-collapse collapse">
 						<ul class="nav">
 							<li{{ Request::is('/') ? ' class="active"' : null}}><a href="{{ url('/') }}">Home</a></li>
+							<li class="dropdown{{ Request::is('league/*') ? ' active' : null}}">
+								<a href="{{ action("LeagueController@getList") }}" class="dropdown-toggle" data-toggle="dropdown">
+									Leagues <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu">
+									<li{{ Request::is('league/list') ? ' class="active"' : null}}><a href="{{ action("LeagueController@getList") }}">League list</a></li>
+									@if(Auth::check())
+										<li class="divider"></li>
+										<li class="nav-header">My Leagues</li>
+										@if(count(Auth::user()->leagues) > 0)
+										@else
+											<li class="navbar-text">None</li>
+										@endif
+										<li class="divider"></li>
+										<li{{ Request::is('league/create') ? ' class="active"' : null}}><a href="{{ action("LeagueController@getCreate") }}">New League</a></li>
+									@endif
+								</ul>
+							</li>
 						</ul>
 						<div class="navbar-text user pull-right">
 							@if(Auth::check())

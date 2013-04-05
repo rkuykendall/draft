@@ -11,7 +11,7 @@
 			@foreach($league->players as $player)
 				<li class="player">
 					<h3>{{{ $player->displayname }}}</h3>
-					<span class="player-money">Total: $0 <sup class="muted">for {{ e($league->units).' '.$player->buytotal }}</sup></span>
+					<span class="player-money pull-right">Total: $0 <small class="muted">for {{ e($league->units).' '.$player->buytotal }}</small></span>
 					@if(count($player->movies) > 0)
 <?php
 $movieNames = $player->movies->map(function($movie) use($league) {
@@ -31,7 +31,9 @@ echo '<p>Movies: '.implode(', ', $movieNames).'</p>';
 		<div>
 			{{ $league->description }}
 		</div>
-		<p><i class="icon-link"></i> <a href="{{{ $league->url }}}" target="_blank">{{{ $league->url }}}</a></p>
+		@if($league->url)
+			<p><i class="icon-link"></i> <a href="{{{ $league->url }}}" target="_blank">{{{ $league->url }}}</a></p>
+		@endif
 		<h3>League Settings</h3>
 		<p><span class="muted">End date:</span> {{{ $league->end_date->format("F j, Y") }}}</p>
 		<h3>Movies</h3>

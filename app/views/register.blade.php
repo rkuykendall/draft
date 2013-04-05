@@ -12,7 +12,7 @@
 			<div class="control-group">
 				<span class="control-label">e-mail</span>
 				<div class="controls">
-					<span class="uneditable-input">{{ Auth::user()->email }}</span>
+					<span class="uneditable-input">{{{ Auth::user()->email }}}</span>
 					<span class="help-block">Your e-mail will be used for login. It's extremely unlikely that you will recieve e-mail from us.</span>
 				</div>
 			</div>

@@ -3,12 +3,15 @@ DRAFTR = {
 	common: {
 		init: function() {
 			// Load config
-			DRAFTR.config = $(document.body).data()
+			DRAFTR.config = $.extend({}, {unloading: false}, $(document.body).data())
 			// Pants check
 			if(location.hostname.endsWith(".dev")) {
 				document.title = "[DEV] "+document.title
 			}
-
+			// Unload check
+			$(window).on("beforeunload", function () {
+				DRAFTR.config.unloading = true
+			});
 			// Persona
 			navigator.id.watch({
 				loggedInUser: (DRAFTR.config.user ? DRAFTR.config.user : null),
@@ -40,6 +43,10 @@ DRAFTR = {
 				},
 				onlogout: function () {
 					setTimeout(function() { // http://stackoverflow.com/a/15623312/211088
+						if(DRAFTR.config.unloading) {
+							return false;
+						}
+
 						$.ajax({
 							type: 'POST',
 							url: DRAFTR.config.url+'/logout',
@@ -58,7 +65,7 @@ DRAFTR = {
 								window.location.reload()
 							}
 						});
-					}, 1000);
+					}, 100);
 				}
 			});
 			// Login

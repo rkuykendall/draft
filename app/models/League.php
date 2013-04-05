@@ -28,6 +28,26 @@ class League extends Eloquent {
 	public function getEndDateAttribute($value) {
 		return new DateTime($value);
 	}
+	public function setNameAttribute($value = '') {
+		if(!$this->slug) {
+			$slug; $i = 0;
+			while(true) {
+				$slug = Str::limit(Str::slug($value), 255-(strlen($i)+1), "");
+				if($i > 0) {
+					$slug .= "-".$i;
+				}
+				if(static::whereSlug($slug)->count() == 0) {
+					break;
+				}
+				$i++;
+			}
+
+
+			$slug = $slug;
+			$this->slug = $slug;
+		}
+		$this->attributes["name"] = $value;
+	}
 
 
 }

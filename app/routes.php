@@ -20,14 +20,32 @@
 
 // Home
 Route::get('/', "HomeController@showWelcome");
-Route::post('login', array('before' => 'csrf',
-	'uses' => "HomeController@showLogin"));
-Route::post('logout', array('before' => 'csrf',
-	'uses' => "HomeController@showLogout"));
-Route::get('register', "HomeController@getRegister");
-Route::post('register', array('before' => 'csrf',
-	'uses' => "HomeController@postRegister"));
+Route::post('login', array(
+	'before' => 'csrf',
+	'uses' => "HomeController@showLogin"
+));
+Route::post('logout', array(
+	'before' => 'csrf',
+	'uses' => "HomeController@showLogout"
+));
+Route::get('register', array(
+	"before" => 'guest',
+	'uses' => "HomeController@getRegister"
+));
+Route::post('register', array(
+	'before' => 'csrf',
+	'uses' => "HomeController@postRegister"
+));
 
-
+// League
+Route::get('league/list', 'LeagueController@getList');
+Route::get('league/create', array(
+	'before' => 'auth',
+	'uses' => 'LeagueController@getCreate'
+));
+Route::post('league/create', array(
+	'before' => 'auth|csrf',
+	'uses' => 'LeagueController@postCreate'
+));
 Route::get('league/{id}-{slug?}', 'LeagueController@getView');
-Route::controller('league', 'LeagueController');
+

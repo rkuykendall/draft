@@ -20,6 +20,11 @@ h1, h2, h3, h4, h5, h6 {
 .navbar .persona-button {
 	margin-bottom: -6px;
 }
+.dropdown .navbar-text {
+	padding: 3px 20px;
+	font-size: 14px;
+	line-height: 14px;
+}
 
 /* Content */
 #content {
@@ -31,10 +36,15 @@ h1, h2, h3, h4, h5, h6 {
 /* Players list */
 .player-money {
 	float: right;
-	margin-top: -40px;
+	margin-top: -50px;
 	font-size: 20px;
+	text-align: right;
 }
-
+.player-money small {
+	margin-bottom: -20px;
+	font-size: 14px;
+	display: block;
+}
 
 
 
