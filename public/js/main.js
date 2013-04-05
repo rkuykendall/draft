@@ -5,7 +5,7 @@ DRAFTR = {
 			// Load config
 			DRAFTR.config = $.extend({}, {unloading: false}, $(document.body).data())
 			// Pants check
-			if(location.hostname.endsWith(".dev")) {
+			if(location.hostname.indexOf(".dev") > 0) {
 				document.title = "[DEV] "+document.title
 			}
 			// Unload check
