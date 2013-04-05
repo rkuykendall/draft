@@ -44,6 +44,9 @@
 										<li class="divider"></li>
 										<li class="nav-header">My Leagues</li>
 										@if(count(Auth::user()->leagues) > 0)
+											@foreach(Auth::user()->leagues as $league)
+												<li{{ Request::is('league/'.$league->id.'-'.$league->slug) ? ' class="active"' : null}}><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">{{{ $league->name }}}</a></li>
+											@endforeach
 										@else
 											<li class="navbar-text">None</li>
 										@endif
