@@ -16,7 +16,7 @@ class CreateLeagueMovies extends Migration {
 			$table->increments('id');
 			$table->integer('league_id')->unsigned();
 			$table->integer('movie_id')->unsigned();
-			$table->integer('price');
+			$table->integer('price')->default(0);
 			$table->timestamps();
 
 			$table->foreign('league_id')->references('id')->on('leagues')->onUpdate('cascade')->onDelete('restrict');

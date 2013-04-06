@@ -47,9 +47,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+/*  Right Rail  */
+.upcomingSeparator {
+	margin-top: -10px;
+	position: relative;
+	text-align: center;
+}
 
+.upcomingSeparator div { 
+	background-color: #0088cc;
+	display: inline-block;
+	height: 5px;
+	left: 0;
+	position: absolute;
+	top: 8px;
+	width: 100%;
+	z-index: -1;
+}
 
-
+.upcomingSeparator span { background-color: #FFF; padding: 0 5px; }
 
 
 /* Mozilla Persona */

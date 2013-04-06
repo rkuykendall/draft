@@ -17,7 +17,7 @@ class CreateLeagueUsers extends Migration {
 			$table->integer('league_id')->unsigned();
 			$table->integer('user_id')->unsigned();
 			$table->boolean('player')->default(true);
-			$table->boolean('admin');
+			$table->boolean('admin')->default(false);
 			$table->timestamps();
 
 			$table->foreign('league_id')->references('id')->on('leagues')->onUpdate('cascade')->onDelete('restrict');
