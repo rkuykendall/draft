@@ -4,7 +4,7 @@
 <ul class="nav nav-tabs">
 	<li{{ Route::currentRouteAction() == "LeagueController@getView" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">Home</a></li>
 
-	@if($league->userIsAdmin(Auth::user()))
+	@if(Auth::check() and $league->userIsAdmin(Auth::user()))
 		<li class="dropdown pull-right{{ Request::is('league/*-*/admin/*') ? ' active' : null }}">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <b class="caret"></b></a>
 			<ul class="dropdown-menu">
