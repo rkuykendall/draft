@@ -38,7 +38,14 @@ echo '<p>Movies: '.implode(', ', $movieNames).'</p>';
 		<p><span class="muted">End date:</span> {{{ $league->end_date->format("F j, Y") }}}</p>
 		<h3>Movies</h3>
 		<ul>
+			<?php $now = new DateTime('now'); $printedUpcoming = false; ?>
 			@foreach($league->movies as $movie)
+				<?php
+					if($now < $movie->release && !$printedUpcoming) { 
+						echo '</ul><div class="upcomingSeparator"><div></div><span>Upcoming</span></div><ul>';
+						$printedUpcoming = true;
+					}
+				?>
 				<li>
 					{{{ $movie->name }}} <small class="muted">({{{ $movie->release->format("F j, Y") }}})</small>
 				</li>
