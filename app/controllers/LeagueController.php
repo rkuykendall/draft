@@ -57,7 +57,7 @@ class LeagueController extends BaseController {
 
 	/* League views */
 	public function getView($leagueID, $leagueSlug = '') {
-		if(!($league = League::with('players')->find($leagueID))) {
+		if(!($league = League::with('users')->find($leagueID))) {
 			App::abort(404);
 		}
 		if($leagueSlug != $league->slug) {
@@ -85,7 +85,7 @@ class LeagueController extends BaseController {
 
 	/* Admin functions */
 	public function getAdminUsers($leagueID, $leagueSlug = '') {
-		if(!($league = League::with('players', 'admins')->find($leagueID))) {
+		if(!($league = League::with('users')->find($leagueID))) {
 			App::abort(404);
 		}
 		if(!$league->admins->contains(Auth::user()->id)) {
@@ -98,7 +98,7 @@ class LeagueController extends BaseController {
 		));
 	}
 	public function postAdminUsers($leagueID, $leagueSlug = '') {
-		if(!($league = League::with('players', 'admins')->find($leagueID))) {
+		if(!($league = League::find($leagueID))) {
 			App::abort(404);
 		}
 		if(!$league->admins->contains(Auth::user()->id)) {

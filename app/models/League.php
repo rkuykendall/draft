@@ -20,6 +20,22 @@ class League extends Eloquent {
 		return $this->belongsToMany('User')->withPivot('player', 'admin')->withTimestamps();
 	}
 
+	public function setRelation($relation, $value) {
+		parent::setRelation($relation, $value);
+
+		// Listen for users relation, use this to hydrate admins and players
+		if($relation == "users") {
+			$players = clone $value;
+			parent::setRelation("players", $players->filter(function($user) {
+				return $user->pivot->player;
+			}));
+			$admins = clone $value;
+			parent::setRelation("admins", $admins->filter(function($user) {
+				return $user->pivot->admin;
+			}));
+		}
+
+	}
 
 
 
