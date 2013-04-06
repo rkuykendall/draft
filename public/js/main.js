@@ -12,6 +12,10 @@ DRAFTR = {
 			$(window).on("beforeunload", function () {
 				DRAFTR.config.unloading = true
 			});
+
+			//autocompleters
+			$('input[data-autocomplete]').autoComplete();
+
 			// Persona
 			navigator.id.watch({
 				loggedInUser: (DRAFTR.config.user ? DRAFTR.config.user : null),
@@ -104,8 +108,86 @@ DRAFTR = {
 				return false;
 			});
 		}
+	},
+
+	debounce: function(func, wait, immediate) {
+		var timeout;
+		return function() {
+			var context = this, args = arguments;
+			var later = function() {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+		};
 	}
 }; /* DRAFTR */
+
+/* Autocomplete Support */
+/* no sanity checking, so use it correctly! */
+(function($){
+	var $allDropDowns;
+
+	$('body').click(function(){
+		$allDropDowns.hide();
+	});
+
+$.fn.autoComplete = function() {
+	$(this).each(function() {
+		var requester; //handle on the ajax request
+		var $input = $(this);
+		var $dropDown = $([
+			'<div id="', $input.attr('name'), '-autoComplete" class="dropdown autocomplete">'
+				,'<ul class="dropdown-menu"></ul>'
+			,'</div>'].join(''));
+		$input.after($dropDown.hide());
+
+		typeof $allDropDowns == "undefined" ? $allDropDowns = $dropDown : $allDropDowns.add($dropDown);
+
+		function onload(response) {
+			var hasData = false;
+
+			if(response.success) {
+				var htmlString = [];
+				var users = response.data;
+				hasData = response.data.length > 0;
+
+				for(var i = 0, len = users.length; i < len; i++) {
+					htmlString.push('<li><a href="javascript:void(\''
+						,users[i].username
+						,'\');">'
+						,users[i].username
+						,'</a></li>');
+				}
+
+				$dropDown.find('ul').empty().append(htmlString.join(''));
+			}
+
+			hasData ? $dropDown.show() : $dropDown.hide();
+		}
+
+		$input.keyup(DRAFTR.debounce(function(e){
+			if(e.keyCode == 13) { //enter
+				$input.closest('form').submit();
+			}
+
+			if($input.val().length > 2) {
+				if(requester) { requester.abort(); }
+				requester = $.ajax({
+					url: $input.data('route') + $input.val(),
+					data: $input.data('request-data'),
+					success: onload
+				});
+			}
+		}, 150));
+
+		$dropDown.delegate('a', 'click', function(){ $input.val($(this).html()); $dropDown.hide(); });
+	});
+};
+})(jQuery);
 
 /* http://viget.com/inspire/extending-paul-irishs-comprehensive-dom-ready-execution */
 UTIL = {

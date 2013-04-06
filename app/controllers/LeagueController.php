@@ -186,6 +186,30 @@ class LeagueController extends BaseController {
 		// Fallback
 		return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug))->withInput();
 	}
+
+	public function userLookup($leagueID, $leagueSlug = '', $query) {
+		if(!($league = League::find($leagueID))) {
+			App::abort(404);
+		}
+		if(!$league->userIsAdmin(Auth::user())) {
+			App::abort(404);
+		}
+
+		$ids = array();
+		if(Input::get('type') == 'admin') {
+			$lusers = $league->admins()->get(array('user_id'));
+		} else {
+			$lusers = $league->players()->get(array('user_id'));
+		}
+		foreach ($lusers as $key => $value) { $ids[] = $value->user_id; }
+
+		$userQuery = User::where('username', 'LIKE', '%'.htmlentities($query).'%');
+		count($ids) > 0 ? $userQuery->whereNotIn('id', $ids) : null;
+		$users = $userQuery->take(6)->get(array('username'));
+
+		return Response::json(array('success' => true, 'data' => $users->toArray()));
+	}
+
 	// Movies
 	public function getAdminMovies($leagueID, $leagueSlug = '') {
 		if(!($league = League::with("users", "movies")->find($leagueID))) {

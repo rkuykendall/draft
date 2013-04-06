@@ -51,6 +51,7 @@ Route::get('league/{id}-{slug?}', 'LeagueController@getView');
 
 Route::get('league/{id}-{slug?}/admin/users', 'LeagueController@getAdminUsers');
 Route::post('league/{id}-{slug?}/admin/users', 'LeagueController@postAdminUsers');
+Route::get('league/{id}-{slug?}/admin/users/lookup/{query}', 'LeagueController@userLookup');
 Route::get('league/{id}-{slug?}/admin/movies', 'LeagueController@getAdminMovies');
 Route::post('league/{id}-{slug?}/admin/movies', 'LeagueController@postAdminMovies');
 
