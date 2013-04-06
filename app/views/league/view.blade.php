@@ -1,9 +1,6 @@
-<div class="hero-unit">
-	<h1>{{{ $league->name }}}</h1>
-</div>
-<ul class="nav nav-tabs">
-	<li{{ Route::currentRouteAction() == "LeagueController@getView" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">Home</a></li>
-</ul>
+@extends("layout.league")
+
+@section("content")
 <div class="row">
 	<div class="span8">
 		<h2>Players</h2>
@@ -34,6 +31,15 @@ echo '<p>Movies: '.implode(', ', $movieNames).'</p>';
 		@if($league->url)
 			<p><i class="icon-link"></i> <a href="{{{ $league->url }}}" target="_blank">{{{ $league->url }}}</a></p>
 		@endif
+		@if(count($league->admins) > 0)
+		<small class="muted">Admins:</small>
+<?php
+$usernames = $league->admins->map(function($user) {
+	return e($user->displayname);
+});
+echo '<p>'.implode(', ', $usernames).'</p>';
+?>
+		@endif
 		<h3>League Settings</h3>
 		<p><span class="muted">End date:</span> {{{ $league->end_date->format("F j, Y") }}}</p>
 		<h3>Movies</h3>
@@ -46,3 +52,4 @@ echo '<p>Movies: '.implode(', ', $movieNames).'</p>';
 		</ul>
 	</div>
 </div>
+@stop

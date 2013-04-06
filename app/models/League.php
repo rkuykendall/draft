@@ -5,7 +5,7 @@ class League extends Eloquent {
 	/* Relationships */
 
 	public function admins() {
-		return $this->users()->where("admin", true);
+		return $this->users()->where("league_user.admin", true);
 	}
 
 	public function movies() {
@@ -13,7 +13,7 @@ class League extends Eloquent {
 	}
 
 	public function players() {
-		return $this->users()->where("player", true);
+		return $this->users()->where("league_user.player", true);
 	}
 
 	public function users() {
