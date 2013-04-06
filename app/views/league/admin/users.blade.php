@@ -5,11 +5,16 @@
 	<div class="span6">
 		<h2>Players</h2>
 		@if(count($league->players) > 0)
-			<ul>
-				@foreach($league->players as $user)
-					<li>{{{ $user->username }}}</li>
-				@endforeach
-			</ul>
+			{{ Former::open() }}
+				{{ Former::token() }}
+				{{ Former::hidden("action", "remove") }}
+				{{ Former::hidden("type", "player")}}
+				<ul>
+					@foreach($league->players as $user)
+						<li>{{{ $user->username }}} <button name="username" value="{{{ $user->username }}}" class="btn btn-mini btn-danger"><i class="icon-remove"></i> Remove</button></li>
+					@endforeach
+				</ul>
+			{{ Former::close() }}
 		@else
 			<p>No players :'(</p>
 		@endif
@@ -26,12 +31,21 @@
 		<h2>Admins</h2>
 		@if(count($league->admins) > 0)
 			<ul>
-				@foreach($league->admins as $user)
-					<li>{{{ $user->username }}}</li>
-				@endforeach
+				{{ Former::open() }}
+					{{ Former::token() }}
+					{{ Former::hidden("action", "remove") }}
+					{{ Former::hidden("type", "admin")}}
+					@foreach($league->admins as $user)
+						@if($user->id == Auth::user()->id)
+							<li>{{{ $user->username }}} <button disabled class="btn btn-mini btn-danger">It's You!</button></li>
+						@else
+							<li>{{{ $user->username }}} <button name="username" value="{{{ $user->username }}}" class="btn btn-mini btn-danger"><i class="icon-remove"></i> Remove</button></li>
+						@endif
+					@endforeach
+				{{ Former::close() }}
 			</ul>
 		@else
-			<p>No admins :'(</p>
+			<p>No admin... Hold on, is this a trap? YOU'LL NEVER TAKE ME ALIVE!!!!!</p>
 		@endif
 		<h3>Add admin</h3>
 		{{ Former::vertical_open() }}

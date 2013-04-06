@@ -147,17 +147,36 @@ class LeagueController extends BaseController {
 			}
 		} elseif($luser && Input::get("action") == "remove") {
 			if(Input::get("type") == "player") {
+				if ($moviecount = $luser->movies()->count()) {
+					Notification::error("User owns {$moviecount} movies in the league!");
+					return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug));
+				}
 				if (!$luser->pivot->player) {
 					Notification::warning("User is already not a player");
 					return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug));
 				}
+				$luser->pivot->player = false;
+				$message = "Player removed";
 			} elseif (Input::get("type") == "admin") {
-				if ($luser->id == Auth::user())
-				if (!$luser->pivot->admin) {
-					Notification::warning("User is already not a player");
+				if ($luser->id == Auth::user()->id) {
+					Notification::error("You can't remove yourself (always must have at least one admin)");
 					return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug));
 				}
+				if (!$luser->pivot->admin) {
+					Notification::warning("User is already not an admin");
+					return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug));
+				}
+				$luser->pivot->admin = false;
+				$message = "Admin removed";
 			}
+			if($luser->pivot->player == false and $luser->pivot->admin == false) {
+				// We can forget about the user.
+				$league->users()->detach($luser);
+			} else {
+				$luser->pivot->save();
+			}
+			Notification::success($message);
+			return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug));
 		}
 		// Fallback
 		return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug))->withInput();
