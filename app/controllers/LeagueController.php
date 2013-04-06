@@ -17,6 +17,7 @@ class LeagueController extends BaseController {
 		"description" => "required",
 		"url" => "url",
 
+		"money" => "required|integer",
 		"units" => "required|max:16",
 	);
 
@@ -39,6 +40,7 @@ class LeagueController extends BaseController {
 		$league->url         = Input::get("url");
 
 		$league->mode        = Config::get("draft.league_defaults.mode");
+		$league->money       = Input::get("money");
 		$league->units       = Input::get("units");
 		$league->end_date    = "2013-09-20";
 		if($league->save()) {
@@ -84,6 +86,9 @@ class LeagueController extends BaseController {
 	}
 
 	/* Admin functions */
+	// League settings
+
+	// Users
 	public function getAdminUsers($leagueID, $leagueSlug = '') {
 		if(!($league = League::with('users')->find($leagueID))) {
 			App::abort(404);
@@ -180,5 +185,82 @@ class LeagueController extends BaseController {
 		}
 		// Fallback
 		return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug))->withInput();
+	}
+	// Movies
+	public function getAdminMovies($leagueID, $leagueSlug = '') {
+		if(!($league = League::with("users", "movies")->find($leagueID))) {
+			App::abort(404);
+		}
+		if(!$league->userIsAdmin(Auth::user())) {
+			App::abort(404);
+		}
+
+		$league->movies->load("users");
+		// Preformatted for your satisfaction
+		$players = array_merge(array(array("id" => 0, "username" => "- Nobody -")), $league->players->map(function($player) {
+			return array("id" => $player->id, "username" => $player->username);
+		}));
+
+		$this->layout->content = View::make("league.admin.movies", array(
+			"league" => $league, "players" => $players,
+		));
+	}
+	public function postAdminMovies($leagueID, $leagueSlug = '') {
+		if(!($league = League::with("users", "movies")->find($leagueID))) {
+			App::abort(404);
+		}
+		if(!$league->userIsAdmin(Auth::user())) {
+			App::abort(404);
+		}
+
+		$league->movies->load("users");
+		$input = Input::get("movies");
+
+		$errors = array();
+		$changes = 0;
+
+		foreach ($league->movies as $movie) {
+			// Bought for = $movie->pivot->price
+			$_price = $input[$movie->id]["price"] ?: 0;
+			if(filter_var($_price, FILTER_VALIDATE_INT) !== false) {
+				if($movie->pivot->price != $_price) {
+					$movie->pivot->price = $_price;
+					$movie->pivot->save();
+					$changes++;
+				}
+			} else {
+				$errors[] = 'Movie '.e($movie->name).' was bought for an invalid price.';
+			}
+			// User = $movie->users[0]
+			$_player = $input[$movie->id]["player"] ?: 0;
+			if($_player == 0 or $league->players->find($_player)) {
+				if(isset($movie->users[0])) {
+					$currowner = $movie->users[0]->id;
+				} else {
+					$currowner = 0;
+				}
+				if($_player != $currowner) {
+					if($currowner == 0) {
+						$movie->users()->attach($_player, array("league_id" => $league->id));
+					} else {
+						$query = DB::table('league_movie_user')->whereLeagueId($league->id)->whereMovieId($movie->id);
+						if($_player) {
+							$query->update(array("user_id" => $_player));
+						} else {
+							$query->delete();
+						}
+					}
+					$changes++;
+				}
+			} else {
+				$errors[] = 'Movie '.e($movie->name).' was bought by an UFO.';
+			}
+		}
+		Notification::success("{$changes} changes saved!");
+		if(count($errors) > 0) {
+			Notification::warning("The following errors occured, and were not processed:<ul><li>".implode("</li><li>", $errors)."</li></ul>");
+		}
+
+		return Redirect::action("LeagueController@getAdminMovies", array($league->id, $league->slug));
 	}
 }

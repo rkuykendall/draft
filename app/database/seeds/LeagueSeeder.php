@@ -13,6 +13,7 @@ class LeagueSeeder extends Seeder {
 EOL;
 		$leagueData['url'] = 'http://draft.nsfwshow.com/';
 		$leagueData['mode'] = 'bid';
+		$leagueData['money'] = 100;
 		$leagueData['units'] = '₪';
 		$leagueData['end_date'] = '2013-09-20';
 

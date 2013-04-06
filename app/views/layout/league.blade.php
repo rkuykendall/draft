@@ -5,12 +5,12 @@
 	<li{{ Route::currentRouteAction() == "LeagueController@getView" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">Home</a></li>
 
 	@if($league->userIsAdmin(Auth::user()))
-		<li class="dropdown pull-right">
+		<li class="dropdown pull-right{{ Request::is('league/*-*/admin/*') ? ' active' : null }}">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <b class="caret"></b></a>
 			<ul class="dropdown-menu">
-				<li><a href="#">Settings</a></li>
-				<li><a href="{{ action("LeagueController@getAdminUsers", array("id" => $league->id, "slug" => $league->slug)) }}">Users</a></li>
-				<li><a href="#">Movies</a></li>
+				<li{{ Request::is('league/*-*/admin/settings') ? ' class="active"' : null }}><a href="#">Settings</a></li>
+				<li{{ Request::is('league/*-*/admin/users') ? ' class="active"' : null }}><a href="{{ action("LeagueController@getAdminUsers", array("id" => $league->id, "slug" => $league->slug)) }}">Users</a></li>
+				<li{{ Request::is('league/*-*/admin/movies') ? ' class="active"' : null }}><a href="{{ action("LeagueController@getAdminMovies", array("id" => $league->id, "slug" => $league->slug)) }}">Movies</a></li>
 			</ul>
 		</li>
 	@endif

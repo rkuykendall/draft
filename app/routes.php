@@ -48,6 +48,9 @@ Route::post('league/create', array(
 	'uses' => 'LeagueController@postCreate'
 ));
 Route::get('league/{id}-{slug?}', 'LeagueController@getView');
+
 Route::get('league/{id}-{slug?}/admin/users', 'LeagueController@getAdminUsers');
 Route::post('league/{id}-{slug?}/admin/users', 'LeagueController@postAdminUsers');
+Route::get('league/{id}-{slug?}/admin/movies', 'LeagueController@getAdminMovies');
+Route::post('league/{id}-{slug?}/admin/movies', 'LeagueController@postAdminMovies');
 
