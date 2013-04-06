@@ -8,9 +8,7 @@ class LeagueSeeder extends Seeder {
 		$leagueData['id'] = 1;
 		$leagueData['name'] = 'NSFWshow Summer Movie Draft 2013';
 		$leagueData['slug'] = Str::slug('NSFWshow Summer Movie Draft 2013');
-		$leagueData['description'] = <<<EOL
-<p>It's back, bitches!</p>
-EOL;
+		$leagueData['description'] = "It's back, bitches!";
 		$leagueData['url'] = 'http://draft.nsfwshow.com/';
 		$leagueData['mode'] = 'bid';
 		$leagueData['money'] = 100;

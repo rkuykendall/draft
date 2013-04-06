@@ -49,8 +49,28 @@ Route::post('league/create', array(
 ));
 Route::get('league/{id}-{slug?}', 'LeagueController@getView');
 
-Route::get('league/{id}-{slug?}/admin/users', 'LeagueController@getAdminUsers');
-Route::post('league/{id}-{slug?}/admin/users', 'LeagueController@postAdminUsers');
-Route::get('league/{id}-{slug?}/admin/movies', 'LeagueController@getAdminMovies');
-Route::post('league/{id}-{slug?}/admin/movies', 'LeagueController@postAdminMovies');
+Route::get('league/{id}-{slug?}/admin/settings', array(
+	'before' => 'auth',
+	'uses' => 'LeagueController@getAdminSettings'
+));
+Route::post('league/{id}-{slug?}/admin/settings', array(
+	'before' => 'auth|csrf',
+	'uses' => 'LeagueController@postAdminSettings'
+));
+Route::get('league/{id}-{slug?}/admin/users', array(
+	'before' => 'auth',
+	'uses' => 'LeagueController@getAdminUsers'
+));
+Route::post('league/{id}-{slug?}/admin/users', array(
+	'before' => 'auth|csrf',
+	'uses' => 'LeagueController@postAdminUsers'
+));
+Route::get('league/{id}-{slug?}/admin/movies', array(
+	'before' => 'auth',
+	'uses' => 'LeagueController@getAdminMovies'
+));
+Route::post('league/{id}-{slug?}/admin/movies', array(
+	'before' => 'auth|csrf',
+	'uses' => 'LeagueController@postAdminMovies'
+));
 

@@ -87,7 +87,56 @@ class LeagueController extends BaseController {
 
 	/* Admin functions */
 	// League settings
+	public $league_edit_valid_rules = array(
+		"name" => "required|max:255",
+		"description" => "required",
+		"url" => "url",
 
+		"money" => "required|integer",
+		"units" => "required|max:16",
+	);
+	public function getAdminSettings($leagueID, $leagueSlug = '') {
+		if(!($league = League::with('users')->find($leagueID))) {
+			App::abort(404);
+		}
+		if(!$league->userIsAdmin(Auth::user())) {
+			App::abort(404);
+		}
+
+		$this->layout->title = "Settings | Admin | ".$league->name;
+		$this->layout->content = View::make("league.admin.settings", array(
+			'league' => $league, "edit_rules" => $this->league_edit_valid_rules
+		));
+	}
+	public function postAdminSettings($leagueID, $leagueSlug = '') {
+		if(!($league = League::with('users')->find($leagueID))) {
+			App::abort(404);
+		}
+		if(!$league->userIsAdmin(Auth::user())) {
+			App::abort(404);
+		}
+
+		$validator = Validator::make(Input::all(), $this->league_edit_valid_rules);
+		if($validator->fails()) {
+			Notification::error("Duder something is wrong with your input.");
+			return Redirect::action("LeagueController@getAdminSettings", array($league->id, $league->slug))->withInput()->withErrors($validator);
+		}
+
+		// Overwrites
+		$league->name        = Input::get("name");
+		$league->description = Input::get("description");
+		$league->url         = Input::get("url");
+
+		$league->money       = Input::get("money");
+		$league->units       = Input::get("units");
+		if($league->save()) {
+			Notification::success("Changes saved!");
+			return Redirect::action("LeagueController@getAdminSettings", array($league->id, $league->slug));
+		} else {
+			Notification::error("Database error, try again later?");
+			return Redirect::action("LeagueController@getAdminSettings", array($league->id, $league->slug))->withInput();
+		}
+	}
 	// Users
 	public function getAdminUsers($leagueID, $leagueSlug = '') {
 		if(!($league = League::with('users')->find($leagueID))) {
@@ -201,6 +250,7 @@ class LeagueController extends BaseController {
 			return array("id" => $player->id, "username" => $player->username);
 		}));
 
+		$this->layout->title = "Movies | Admin | ".$league->name;
 		$this->layout->content = View::make("league.admin.movies", array(
 			"league" => $league, "players" => $players,
 		));
