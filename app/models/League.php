@@ -38,6 +38,14 @@ class League extends Eloquent {
 	}
 
 
+	public function userIsAdmin($user) {
+		if(isset($this->relations["admins"])) {
+			return $this->admins->contains($user->id);
+		} else {
+			return $this->admins()->whereUser_id($user->id)->count();
+		}
+	}
+
 
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */
 

@@ -88,7 +88,7 @@ class LeagueController extends BaseController {
 		if(!($league = League::with('users')->find($leagueID))) {
 			App::abort(404);
 		}
-		if(!$league->admins->contains(Auth::user()->id)) {
+		if(!$league->userIsAdmin(Auth::user())) {
 			App::abort(404);
 		}
 
@@ -101,7 +101,7 @@ class LeagueController extends BaseController {
 		if(!($league = League::find($leagueID))) {
 			App::abort(404);
 		}
-		if(!$league->admins->contains(Auth::user()->id)) {
+		if(!$league->userIsAdmin(Auth::user())) {
 			App::abort(404);
 		}
 
@@ -145,9 +145,21 @@ class LeagueController extends BaseController {
 				Notification::success("User added!");
 				return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug));
 			}
+		} elseif($luser && Input::get("action") == "remove") {
+			if(Input::get("type") == "player") {
+				if (!$luser->pivot->player) {
+					Notification::warning("User is already not a player");
+					return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug));
+				}
+			} elseif (Input::get("type") == "admin") {
+				if ($luser->id == Auth::user())
+				if (!$luser->pivot->admin) {
+					Notification::warning("User is already not a player");
+					return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug));
+				}
+			}
 		}
-		// TODO: Remove
-
+		// Fallback
 		return Redirect::action("LeagueController@getAdminUsers", array($league->id, $league->slug))->withInput();
 	}
 }
