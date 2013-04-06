@@ -26,7 +26,7 @@ echo '<p>Movies: '.implode(', ', $movieNames).'</p>';
 	<div class="span4">
 		<small class="muted">About</small>
 		<div>
-			{{ $league->description }}
+			{{ nl2br(e($league->description)) }}
 		</div>
 		@if($league->url)
 			<p><i class="icon-link"></i> <a href="{{{ $league->url }}}" target="_blank">{{{ $league->url }}}</a></p>
