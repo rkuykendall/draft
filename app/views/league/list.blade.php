@@ -10,6 +10,9 @@
 		@foreach($leagues as $league)
 			<tr>
 				<td>
+					@if($league->featured)
+						<i class="icon-star-empty icon-4x pull-right" title="Featured by Draftr admins"></i>
+					@endif
 					<h3><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">
 						{{{ $league->name }}}
 					</a></h3>

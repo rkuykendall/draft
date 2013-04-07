@@ -4,7 +4,7 @@ class LeagueController extends BaseController {
 	public $layout = 'layout.main';
 
 	public function getList() {
-		$leagues = League::all();
+		$leagues = League::wherePrivate(false)->get();
 		$this->layout->title = "Leagues";
 		$this->layout->content = View::make("league.list", array(
 			"leagues" => $leagues
@@ -38,6 +38,7 @@ class LeagueController extends BaseController {
 		$league->name        = Input::get("name");
 		$league->description = Input::get("description");
 		$league->url         = Input::get("url");
+		$league->private     = Input::get("private") ? true : false;
 
 		$league->mode        = Config::get("draft.league_defaults.mode");
 		$league->money       = Input::get("money");
@@ -126,6 +127,7 @@ class LeagueController extends BaseController {
 		$league->name        = Input::get("name");
 		$league->description = Input::get("description");
 		$league->url         = Input::get("url");
+		$league->private     = Input::get("private") ? true : false;
 
 		$league->money       = Input::get("money");
 		$league->units       = Input::get("units");
