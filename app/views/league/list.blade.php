@@ -16,7 +16,7 @@
 					<h3><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">
 						{{{ $league->name }}}
 					</a></h3>
-					{{ $league->description }}
+					{{ nl2br(e($league->description)) }}
 				</td>
 			</tr>
 		@endforeach
