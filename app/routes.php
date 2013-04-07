@@ -65,6 +65,10 @@ Route::post('league/{id}-{slug?}/admin/users', array(
 	'before' => 'auth|csrf',
 	'uses' => 'LeagueController@postAdminUsers'
 ));
+Route::get('league/{id}-{slug?}/admin/users/lookup/{query}', array(
+	'before' => 'auth',
+	'uses' => 'LeagueController@userLookup'
+));
 Route::get('league/{id}-{slug?}/admin/movies', array(
 	'before' => 'auth',
 	'uses' => 'LeagueController@getAdminMovies'
@@ -73,4 +77,3 @@ Route::post('league/{id}-{slug?}/admin/movies', array(
 	'before' => 'auth|csrf',
 	'uses' => 'LeagueController@postAdminMovies'
 ));
-
