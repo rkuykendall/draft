@@ -14,7 +14,7 @@ class LeagueSeeder extends Seeder {
 		$leagueData['money'] = 100;
 		$leagueData['units'] = '₪';
 		$leagueData['end_date'] = '2013-09-20';
-		$leagueData['featued'] = true;
+		$leagueData['featured'] = true;
 
 		League::create($leagueData);
 	}
