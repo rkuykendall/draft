@@ -13,7 +13,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($league->movies as $i => $movie)
+			@foreach($league->movies()->orderBy('release', 'asc')->get() as $i => $movie)
 				<tr>
 					<th>{{{ $movie->name }}}</th>
 					<td><div class="input-prepend"><span class="add-on">{{{ $league->units }}}</span>{{ Former::small_text("movies[{$movie->id}][price]")->raw()->value($movie->pivot->price)->pattern('[+-]?\d*\.?\d+') }}</div></td>
