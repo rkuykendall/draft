@@ -46,7 +46,7 @@ echo '<p>'.implode(', ', $usernames).'</p>';
 		<h3>Movies</h3>
 		<ul>
 			<?php $now = new DateTime('now'); $printedUpcoming = false; ?>
-			@foreach($league->movies as $movie)
+			@foreach($league->movies()->orderBy('release', 'asc')->get() as $movie)
 				<?php
 					if($now < $movie->release && !$printedUpcoming) {
 						echo '</ul><div class="upcomingSeparator"><div></div><span>Upcoming</span></div><ul>';
