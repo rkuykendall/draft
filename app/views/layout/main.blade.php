@@ -70,7 +70,7 @@
 									</li>
 								</ul>
 							@else
-								<a id="js-login" class="persona-button dark" href="#"><span>Sign in with Persona</span></a><span id="js-login-status" style="display: none;"></span>
+								<a id="js-login" class="persona-button dark" href="#"><span>Sign in with your Email</span></a><span id="js-login-status" style="display: none;"></span>
 							@endif
 						</div>
 					</div><!--/.nav-collapse -->
