@@ -130,7 +130,7 @@ class UpdateBoxOfficeEarnings extends Command {
 		*/
 		$htmlString = $doc->saveHTML();
 		$matches;
-		$found = preg_match('/Domestic Total as of [\w\.]+\s*\d+,?\s*\d*:<\/font>\s*<b>\$([0-9,]*)/', $htmlString, &$matches);
+		$found = preg_match('/Domestic Total as of [\w\.]+\s*\d+,?\s*\d*:<\/font>\s*<b>\$([0-9,]*)/', $htmlString, $matches);
 		
 		$BOE = $found ? intval(str_replace(',', '', $matches[1])) : 0;
 
