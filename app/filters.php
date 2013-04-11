@@ -35,7 +35,8 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::route('login');
+	Notification::error("Session expired. If persona thinks you should be logged in just wait for the refresh.");
+	if (Auth::guest()) return Redirect::to('/');
 });
 
 
