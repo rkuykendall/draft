@@ -5,6 +5,7 @@
 		"guzzle/guzzle": "~3.1.1",
 		"anahkiasen/former": "dev-agnostic",
 		"edvinaskrucas/notification": "1.*",
+		"pda/pheanstalk": "2.0.*",
 		"barryvdh/laravel-ide-helper": "dev-master"
 	},
 	"require-dev": {
