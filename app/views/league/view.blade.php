@@ -8,7 +8,7 @@
 			@foreach($league->players as $player)
 				<li class="player">
 					<h3>{{{ $player->displayname }}}</h3>
-					<span class="player-money pull-right">Total: $0 <small class="muted">for {{ e($league->units).' '.$player->buytotal.' / '.$league->units.' '.$league->money }}</small></span>
+					<span class="player-money pull-right">Total: ${{{ number_format($player->pivot->earnings_total) }}} <small class="muted">for {{ e($league->units).' '.$player->buytotal.' / '.$league->units.' '.$league->money }}</small></span>
 					@if(count($player->movies) > 0)
 <?php
 $movieNames = $player->movies->map(function($movie) use($league) {
@@ -46,7 +46,7 @@ echo '<p>'.implode(', ', $usernames).'</p>';
 		<h3>Movies</h3>
 		<ul>
 			<?php $now = new DateTime('now'); $printedUpcoming = false; ?>
-			@foreach($league->movies()->orderBy('release', 'asc')->get() as $movie)
+			@foreach($league->movies as $movie)
 				<?php
 					if($now < $movie->release && !$printedUpcoming) {
 						echo '</ul><div class="upcomingSeparator"><div></div><span>Upcoming</span></div><ul>';
@@ -54,7 +54,7 @@ echo '<p>'.implode(', ', $usernames).'</p>';
 					}
 				?>
 				<li>
-					{{{ $movie->name }}} <small class="muted">({{{ $movie->release->format("F j, Y") }}})</small>
+					{{{ $movie->name }}} <small class="muted">({{{ $now >= $movie->release ? '$'.number_format($movie->latestEarnings->domestic) : $movie->release->format("F j, Y") }}})</small>
 				</li>
 			@endforeach
 		</ul>

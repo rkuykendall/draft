@@ -1,21 +1,31 @@
 <?php
 
 class Movie extends Eloquent {
+	/* Relations */
 	public function users() {
 		// Only if called via league
 		if(!$this->pivot or $this->pivot->getTable() != "league_movie") {
-			return $this->belongsToMany('User', 'league_movie_user');
+			return $this->belongsToMany('User', 'league_movie_user')->withPivot('league_id');
 		}
 		return $this->belongsToMany('User', 'league_movie_user')->withPivot('league_id')->where('league_id', $this->pivot->league_id);
+	}
+	public function earnings() {
+		return $this->hasMany('MovieEarning');
+	}
+	public function latestEarnings() {
+		return $this->belongsTo('MovieEarning');
 	}
 
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */
 
 	public function getReleaseAttribute($value) {
-		return new DateTime($value);
+		if(is_string($value))
+			return new DateTime($value);
+		return $value;
 	}
 
 	public function grabLeaguePivot($lmovie) {
 		$this->setRelation("lpivot", $lmovie->pivot);
+		$this->setRelation("latestEarnings", $lmovie->latestEarnings);
 	}
 }

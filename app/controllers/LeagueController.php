@@ -66,8 +66,15 @@ class LeagueController extends BaseController {
 		if($leagueSlug != $league->slug) {
 			return Redirect::to("league/{$league->id}-{$league->slug}");
 		}
+		$league->load('movies');
+		$league->movies->load('latestEarnings');
 		$league->players->load('movies');
 		// Link up draft-movie pivot
+		$league->movies->each(function($movie) {
+			if(!$movie->latestEarnings) {
+				$movie->setRelation("latestEarnings", new MovieEarning(array("domestic" => 0)));
+			}
+		});
 		$league->players->each(function($player) use($league) {
 			$player->movies->map(function($movie) use($league) {
 				$lmovie = $league->movies->find($movie->id);

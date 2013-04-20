@@ -9,7 +9,7 @@ class League extends Eloquent {
 	}
 
 	public function movies() {
-		return $this->belongsToMany('Movie')->withPivot('price')->withTimestamps();
+		return $this->belongsToMany('Movie')->withPivot('price')->orderBy('release', 'asc')->withTimestamps();
 	}
 
 	public function players() {
@@ -17,7 +17,7 @@ class League extends Eloquent {
 	}
 
 	public function users() {
-		return $this->belongsToMany('User')->withPivot('player', 'admin')->withTimestamps();
+		return $this->belongsToMany('User')->orderBy('earnings_total', 'desc')->orderBy('id', 'asc')->withPivot('player', 'admin', 'earnings_total')->withTimestamps();
 	}
 
 	public function setRelation($relation, $value) {
