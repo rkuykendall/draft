@@ -17,7 +17,7 @@ class League extends Eloquent {
 	}
 
 	public function users() {
-		return $this->belongsToMany('User')->orderBy('earnings_total', 'desc')->orderBy('id', 'asc')->withPivot('player', 'admin', 'earnings_total')->withTimestamps();
+		return $this->belongsToMany('User')->orderBy('earnings_total', 'desc')->orderBy('league_user.id', 'asc')->withPivot('player', 'admin', 'earnings_total')->withTimestamps();
 	}
 
 	public function setRelation($relation, $value) {

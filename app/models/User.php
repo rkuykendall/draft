@@ -14,7 +14,7 @@ class User extends Eloquent implements UserInterface {
 		if(!$this->pivot or $this->pivot->getTable() != "league_user") {
 			return $this->belongsToMany('Movie', 'league_movie_user');
 		}
-		return $this->belongsToMany('Movie', 'league_movie_user')->withPivot('league_id')->where('league_id', $this->pivot->league_id);
+		return $this->belongsToMany('Movie', 'league_movie_user')->withPivot('league_id')->where('league_id', $this->pivot->league_id)->orderBy('release', 'asc');
 	}
 
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */

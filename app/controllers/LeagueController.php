@@ -301,6 +301,7 @@ class LeagueController extends BaseController {
 
 		$errors = array();
 		$changes = 0;
+		$update_players = array(0);
 
 		foreach ($league->movies as $movie) {
 			// Bought for = $movie->pivot->price
@@ -334,12 +335,25 @@ class LeagueController extends BaseController {
 						}
 					}
 					$changes++;
+					if(array_search($_player, $update_players) === false) {
+						$update_players[] = $_player;
+					}
+					if(array_search($currowner, $update_players) === false) {
+						$update_players[] = $currowner;
+					}
 				}
 			} else {
 				$errors[] = 'Movie '.e($movie->name).' was bought by an UFO.';
 			}
 		}
 		Notification::success("{$changes} changes saved!");
+		foreach ($update_players as $user_id) {
+			if($user_id != 0) {
+				Queue::push("UpdateUserEarnings", array(
+					"user_id" => $user_id, "league_id" => $league->id, "since" => (new DateTime())->format('U')
+				));
+			}
+		}
 		if(count($errors) > 0) {
 			Notification::warning("The following errors occured, and were not processed:<ul><li>".implode("</li><li>", $errors)."</li></ul>");
 		}

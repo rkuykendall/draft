@@ -132,7 +132,8 @@ DRAFTR = {
 	var $allDropDowns;
 
 	$('body').click(function(){
-		$allDropDowns.hide();
+		if(typeof $allDropDowns != "undefined")
+			$allDropDowns.hide();
 	});
 
 $.fn.autoComplete = function() {
