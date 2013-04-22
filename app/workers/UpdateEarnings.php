@@ -33,13 +33,13 @@ class UpdateEarnings {
 			$movie->latest_earnings_id = $earnings->id;
 			$movie->save();
 			// Queue up league user updates
-			foreach ($movie->users as $user) {
-				Queue::push("UpdateUserEarnings", array(
-					"user_id" => $user->id, "league_id" => $user->pivot->league_id, "since" => $earnings->updated_at->format('U')
-				));
-			}
 		}
 
+		foreach ($movie->users as $user) {
+			Queue::push("UpdateUserEarnings", array(
+				"user_id" => $user->id, "league_id" => $user->pivot->league_id, "since" => $earnings->updated_at->format('U')
+			));
+		}
 		$job->delete();
 	}
 
