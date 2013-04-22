@@ -10,11 +10,6 @@ class UpdateEarnings {
 
 
 	public function fire($job, $data) {
-		DB::listen(function($sql, $bindings, $time)
-		{
-		    s($sql, $bindings, $time);
-		});
-
 		$movie = Movie::find($data["movie_id"]);
 		if(!$movie) {
 			$job->release(5);
