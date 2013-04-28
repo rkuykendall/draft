@@ -1,6 +1,9 @@
 <?php
 
 class Movie extends Eloquent {
+
+	public $dates = array("created_at", "updated_at");
+
 	/* Relations */
 	public function users() {
 		// Only if called via league
@@ -17,11 +20,13 @@ class Movie extends Eloquent {
 	}
 
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */
-
+	// release
 	public function getReleaseAttribute($value) {
-		if(is_string($value))
-			return new DateTime($value);
-		return $value;
+		/* Cannot use $dates due to format */
+		if (!($value instanceof DateTime)) {
+			return Carbon::createFromFormat('Y-m-d', $value);
+		}
+		return Carbon::instance($value);
 	}
 
 	public function grabLeaguePivot($lmovie) {

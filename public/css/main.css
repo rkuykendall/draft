@@ -20,7 +20,7 @@ h1, h2, h3, h4, h5, h6 {
 .navbar .persona-button {
 	margin-bottom: -6px;
 }
-.dropdown .navbar-text {
+.dropdown-menu .navbar-text {
 	padding: 3px 20px;
 	font-size: 14px;
 	line-height: 14px;
@@ -61,7 +61,7 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 }
 
-.upcomingSeparator div { 
+.upcomingSeparator div {
 	background-color: #0088cc;
 	display: inline-block;
 	height: 5px;

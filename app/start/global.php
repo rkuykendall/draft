@@ -49,8 +49,6 @@ Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 |
 */
 
-
-
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
@@ -69,12 +67,27 @@ App::error(function(Exception $exception, $code)
 
 require __DIR__.'/../filters.php';
 
+/*
+| 404 page
+*/
+
 App::missing(function($exception) {
 	$layout = View::make("layout.main");
 	$layout->content = View::make("errors.404");
 	return Response::make($layout, 404);
 });
 
+// See Model::findOrFail()
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+App::error(function(ModelNotFoundException $e) {
+	$layout = View::make("layout.main");
+	$layout->content = View::make("errors.404");
+	return Response::make($layout, 404);
+});
+
+/*
+| Defaults
+*/
 View::composer("layout.main", function ($view) {
 	if(!isset($view->javascript)) {
 		$view->javascript = array();
@@ -82,4 +95,7 @@ View::composer("layout.main", function ($view) {
 	if(!isset($view->content)) {
 		$view->content = "";
 	}
+	$view->last_update = Cache::rememberForever('last_update', function() {
+	    return MovieEarning::asDateTime(MovieEarning::max("updated_at"));
+	});
 });

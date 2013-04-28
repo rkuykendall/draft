@@ -1,10 +1,25 @@
 <?php
 
 class HomeController extends BaseController {
-
 	public $layout = "layout.main";
 
-	public function showWelcome() {
+	public function __construct() {
+		$this->beforeFilter("csrf", array("on" => "post"));
+
+		$this->beforeFilter("guest", array("only" => array("getRegister", "postRegister")));
+
+		$this->beforeFilter(function($route, $request) {
+			if(!Session::has("register_email")) {
+				Notification::error("Session expired, we might get a fresh one by the browser...");
+				return Redirect::to("/");
+			}
+		}, array("only" => array("getRegister", "postRegister")));
+	}
+
+	/* ROUTES */
+
+	// Home
+	public function getWelcome() {
 		$leagues = League::whereFeatured(true)->get();
 		$this->layout->content = View::make("home.index", array(
 			"leagues" => $leagues
@@ -12,7 +27,7 @@ class HomeController extends BaseController {
 	}
 
 	// Login & Logout
-	public function showLogin() {
+	public function postLogin() {
 		if(!Auth::guest()) {
 			Auth::logout();
 		}
@@ -50,7 +65,7 @@ class HomeController extends BaseController {
 			}
 		}
 	}
-	public function showLogout() {
+	public function postLogout() {
 		if(Session::has("register_email")) {
 			Session::forget("register_email");
 		}
@@ -69,13 +84,6 @@ class HomeController extends BaseController {
 	);
 
 	public function getRegister() {
-		if(!Auth::guest()) {
-			return Redirect::to("/");
-		}
-		if(!Session::has("register_email")) {
-			Notification::error("Session expired, we might get a fresh one by the browser...");
-			return Redirect::to("/");
-		}
 		$email = Session::get("register_email");
 
 		$fakeuser = new User();
@@ -86,14 +94,6 @@ class HomeController extends BaseController {
 		$this->layout->javascript = array("register");
 	}
 	public function postRegister($value='') {
-		if(!Auth::guest()) {
-			return Redirect::to("/");
-		}
-		if(!Session::has("register_email")) {
-			Notification::error("Session expired, we might get a fresh one by the browser...");
-			return Redirect::to("/");
-		}
-
 		$validator = Validator::make(Input::all(), $this->register_valid_rules);
 		if ($validator->fails()) {
 			Notification::error("Something's wrong, check the fields bellow!");

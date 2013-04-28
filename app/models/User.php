@@ -3,6 +3,7 @@
 use Illuminate\Auth\UserInterface;
 
 class User extends Eloquent implements UserInterface {
+	public $dates = array("created_at", "updated_at");
 
 	/* Relationships */
 

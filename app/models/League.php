@@ -2,6 +2,8 @@
 
 class League extends Eloquent {
 
+	public $dates = array("created_at", "updated_at");
+
 	/* Relationships */
 
 	public function admins() {
@@ -48,10 +50,15 @@ class League extends Eloquent {
 
 
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */
-
+	// end_date
 	public function getEndDateAttribute($value) {
-		return new DateTime($value);
+		/* Cannot use $dates due to format */
+		if (!($value instanceof DateTime)) {
+			return Carbon::createFromFormat('Y-m-d', $value);
+		}
+		return Carbon::instance($value);
 	}
+	// name =
 	public function setNameAttribute($value = '') {
 		if(!$this->slug) {
 			$slug; $i = 0;

@@ -1,6 +1,7 @@
 <?php
 class MovieEarning extends Eloquent {
 	public $fillable = array("movie_id", "date", "domestic");
+	public $dates = array("created_at", "updated_at");
 
 	/* Relations */
 	public function movie() {
@@ -8,21 +9,13 @@ class MovieEarning extends Eloquent {
 	}
 
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */
+	// date
 	public function getDateAttribute($value) {
-		if(is_string($value))
-			return new DateTime($value);
-		return $value;
+		/* Cannot use $dates due to format */
+		if (!($value instanceof DateTime)) {
+			return Carbon::createFromFormat('Y-m-d', $value);
+		}
+		return Carbon::instance($value);
 	}
-	public function getCreatedAtAttribute($value) {
-		if(is_string($value))
-			return new DateTime($value);
-		return $value;
-	}
-	public function getUpdatedAtAttribute($value) {
-		if(is_string($value))
-			return new DateTime($value);
-		return $value;
-	}
-
 
 }

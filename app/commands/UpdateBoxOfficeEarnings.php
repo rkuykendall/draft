@@ -53,6 +53,12 @@ class UpdateBoxOfficeEarnings extends Command {
 		foreach ($movies as $movie) {
 			Queue::push("UpdateEarnings", array("movie_id" => $movie->id));
 		}
+
+		Queue::push(function($job) {
+			Cache::forever("last_update", Carbon::now());
+
+			$job->delete();
+		});
 	}
 
 	/**

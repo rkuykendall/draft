@@ -3,7 +3,7 @@
 @section("content")
 <div class="row">
 	<div class="span8">
-		<h2>Players</h2>
+		<h2>Overview</h2>
 		<ol>
 			@foreach($league->players as $player)
 				<li class="player">
@@ -41,7 +41,7 @@ echo '<p>'.implode(', ', $usernames).'</p>';
 ?>
 		@endif
 		<h3>League Settings</h3>
-		<p><span class="muted">End date:</span> {{{ $league->end_date->format("F j, Y") }}}</p>
+		<p><span class="muted">End date:</span> {{{ $league->end_date->toFormattedDateString() }}}</p>
 		<p><span class="muted">Buying money:</span> {{{ $league->units.' '.$league->money }}}</p>
 		<h3>Movies</h3>
 		<ul>
@@ -54,7 +54,7 @@ echo '<p>'.implode(', ', $usernames).'</p>';
 					}
 				?>
 				<li>
-					{{{ $movie->name }}} <small class="muted">({{{ $now >= $movie->release ? '$'.number_format($movie->latestEarnings->domestic) : $movie->release->format("F j, Y") }}})</small>
+					{{{ $movie->name }}} <small class="muted">({{{ $now >= $movie->release ? '$'.number_format($movie->latestEarnings->domestic) : $movie->release->toFormattedDateString() }}})</small>
 				</li>
 			@endforeach
 		</ul>

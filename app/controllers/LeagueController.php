@@ -3,6 +3,18 @@
 class LeagueController extends BaseController {
 	public $layout = 'layout.main';
 
+	public function __construct() {
+		$this->beforeFilter("auth", array("only" => array(
+			"getCreate", "postCreate",
+			"getAdminSettings", "postAdminSettings", "getAdminUsers", "postAdminUsers", "userLookup", "getAdminMovies", "postAdminMovies"
+		)));
+
+		$this->beforeFilter("csrf", array("on" => "post"));
+	}
+
+	/* ROUTES */
+
+	/* League list */
 	public function getList() {
 		$leagues = League::wherePrivate(false)->get();
 		$this->layout->title = "Leagues";
@@ -91,6 +103,9 @@ class LeagueController extends BaseController {
 		$this->layout->content = View::make("league.view", array(
 			'league' => $league,
 		));
+	}
+	public function getViewPlayers() {
+
 	}
 
 	/* Admin functions */

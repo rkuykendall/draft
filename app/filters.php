@@ -13,7 +13,9 @@
 
 App::before(function($request)
 {
-	//
+	if(Session::has("register_email") and !($request->is("logout") or $request->is("register"))) {
+		return Redirect::to("register");
+	}
 });
 
 
@@ -36,7 +38,7 @@ App::after(function($request, $response)
 Route::filter('auth', function()
 {
 	if(Auth::guest()) {
-		Notification::error("Session expired. If persona thinks you should be logged in just wait for the refresh.");
+		Notification::error("You must be logged in to use this feature!");
 		return Redirect::to('/');
 	}
 });
