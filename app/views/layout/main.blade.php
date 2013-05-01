@@ -57,7 +57,7 @@
 						</li>
 					</ul>
 					<div class="navbar-text user pull-right">
-						@if(Auth::check())
+						@if(Auth::check() and Auth::user()->id)
 							<ul class="nav">
 								<li class="dropdown">
 									<a href="#" id="js-user" class="dropdown-toggle" data-toggle="dropdown">
