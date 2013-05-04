@@ -14,7 +14,7 @@
 $movieNames = $player->movies->map(function($movie) use($league) {
 	return e($movie->name).' <span class="muted">('.e($league->units).' '.$movie->lpivot->price.')</span>';
 });
-echo '<p>Movies: '.implode(', ', $movieNames).'</p>';
+echo '<p>Movies: '.implode(', ', $movieNames->toArray()).'</p>';
 ?>
 					@else
 						<p>Movies: None</p>
@@ -37,7 +37,7 @@ echo '<p>Movies: '.implode(', ', $movieNames).'</p>';
 $usernames = $league->admins->map(function($user) {
 	return e($user->displayname);
 });
-echo '<p>'.implode(', ', $usernames).'</p>';
+echo '<p>'.implode(', ', $usernames->toArray()).'</p>';
 ?>
 		@endif
 		<h3>League Settings</h3>

@@ -96,7 +96,7 @@ class LeagueController extends BaseController {
 			});
 			$player->buytotal = array_sum($player->movies->map(function($movie) {
 				return $movie->lpivot->price;
-			}));
+			})->toArray());
 		});
 
 		$this->layout->title = $league->name;
@@ -296,7 +296,7 @@ class LeagueController extends BaseController {
 		// Preformatted for your satisfaction
 		$players = array_merge(array(array("id" => 0, "username" => "- Nobody -")), $league->players->map(function($player) {
 			return array("id" => $player->id, "username" => $player->username);
-		}));
+		})->toArray());
 
 		$this->layout->title = "Movies | Admin | ".$league->name;
 		$this->layout->content = View::make("league.admin.movies", array(

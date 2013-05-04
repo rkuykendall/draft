@@ -56,6 +56,22 @@ App::error(function(Exception $exception, $code)
 
 /*
 |--------------------------------------------------------------------------
+| Maintenance Mode Handler
+|--------------------------------------------------------------------------
+|
+| The "down" Artisan command gives you the ability to put an application
+| into maintenance mode. Here, you will define what is displayed back
+| to the user if maintenace mode is in effect for this application.
+|
+*/
+
+App::down(function()
+{
+	return Response::make(View::make("errors.503"), 503);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Require The Filters File
 |--------------------------------------------------------------------------
 |
@@ -72,6 +88,7 @@ require __DIR__.'/../filters.php';
 */
 
 App::missing(function($exception) {
+	dd(Route::getFacadeRoot());
 	$layout = View::make("layout.main");
 	$layout->content = View::make("errors.404");
 	return Response::make($layout, 404);
