@@ -179,8 +179,7 @@ class LeagueController extends BaseController {
 			unset($user->earliest);
 		}
 
-		d($data);
-		return "";
+		return Response::json($data);
 	}
 
 	/* Admin functions */
