@@ -149,8 +149,11 @@ class LeagueController extends BaseController {
 
 		$query = DB::table("league_user")->select("league_user.user_id", "movie_earnings.date", DB::raw("SUM(movie_earnings.domestic) as earnings"))
 		         ->where("league_user.league_id", $league->id)->wherePlayer(1)->whereNotNull("date")
-		         ->leftJoin("league_movie_user", 'league_movie_user.user_id', '=', 'league_user.user_id')
-		         ->leftJoin("movie_earnings", 'movie_earnings.movie_id', '=', 'league_movie_user.movie_id')
+		         ->leftJoin("league_movie_user", function($join) {
+		         	$join->on("league_movie_user.user_id", "=", "league_user.user_id");
+		         	$join->on("league_movie_user.league_id", "=", "league_user.league_id");
+		         })
+		         ->leftJoin("movie_earnings", "movie_earnings.movie_id", "=", "league_movie_user.movie_id")
 		         ->groupBy("league_user.user_id", "movie_earnings.date")->orderBy("movie_earnings.date", "ASC")
 		;
 
@@ -176,7 +179,8 @@ class LeagueController extends BaseController {
 			unset($user->earliest);
 		}
 
-		return Response::json($data);
+		d($data);
+		return "";
 	}
 
 	/* Admin functions */
