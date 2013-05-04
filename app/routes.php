@@ -30,14 +30,25 @@ Route::get('league/list', 'LeagueController@getList');
 Route::get('league/create', 'LeagueController@getCreate');
 Route::post('league/create', 'LeagueController@postCreate');
 Route::get('league/{id}-{slug?}', 'LeagueController@getView');
+Route::get('league/{id}', 'LeagueController@getView');
+Route::get('league/{id}-{slug?}/players', 'LeagueController@getViewPlayers');
+Route::get('league/{id}/players', 'LeagueController@getViewPlayers');
+Route::get('league/{id}/chart', 'LeagueController@getChartData');
 
 Route::get('league/{id}-{slug?}/admin/settings', 'LeagueController@getAdminSettings');
+Route::get('league/{id}/admin/settings', 'LeagueController@getAdminSettings');
 Route::post('league/{id}-{slug?}/admin/settings', 'LeagueController@postAdminSettings');
+Route::post('league/{id}/admin/settings', 'LeagueController@postAdminSettings');
 Route::get('league/{id}-{slug?}/admin/users', 'LeagueController@getAdminUsers');
+Route::get('league/{id}/admin/users', 'LeagueController@getAdminUsers');
 Route::post('league/{id}-{slug?}/admin/users', 'LeagueController@postAdminUsers');
+Route::post('league/{id}/admin/users', 'LeagueController@postAdminUsers');
 Route::get('league/{id}-{slug?}/admin/users/lookup/{query}', 'LeagueController@userLookup');
+Route::get('league/{id}/admin/users/lookup/{query}', 'LeagueController@userLookup');
 Route::get('league/{id}-{slug?}/admin/movies', 'LeagueController@getAdminMovies');
+Route::get('league/{id}/admin/movies', 'LeagueController@getAdminMovies');
 Route::post('league/{id}-{slug?}/admin/movies', 'LeagueController@postAdminMovies');
+Route::post('league/{id}/admin/movies', 'LeagueController@postAdminMovies');
 
 // User
 Route::get("user/{username}", "UserController@getView");

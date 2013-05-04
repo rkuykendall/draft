@@ -104,8 +104,80 @@ class LeagueController extends BaseController {
 			'league' => $league,
 		));
 	}
-	public function getViewPlayers() {
+	public function getViewPlayers($leagueID, $leagueSlug = '') {
+		$league = League::findOrFail($leagueID);
+		if($leagueSlug != $league->slug) {
+			return Redirect::to("league/{$league->id}-{$league->slug}/players");
+		}
 
+		$league->load('users');
+		$league->load('movies');
+		$league->movies->load('latestEarnings');
+		$league->players->load('movies');
+		// Link up draft-movie pivot
+		$league->movies->each(function($movie) {
+			if(!$movie->latestEarnings) {
+				$movie->setRelation("latestEarnings", new MovieEarning(array("domestic" => 0)));
+			}
+		});
+		$league->players->each(function($player) use($league) {
+			$player->movies->map(function($movie) use($league) {
+				$lmovie = $league->movies->find($movie->id);
+				if($lmovie) {
+					$movie->grabLeaguePivot($lmovie);
+				}
+			});
+			$player->buytotal = array_sum($player->movies->map(function($movie) {
+				return $movie->lpivot->price;
+			})->toArray());
+		});
+
+
+		$this->layout->title = "Players | ". $league->name;
+		$this->layout->content = View::make("league.players", compact("league"));
+		$this->layout->javascript = array("league", "players");
+		$this->layout->assets = array(
+			"js" => array(
+				asset("js/vendor/jquery.flot.min.js"),
+				asset("js/vendor/jquery.flot.time.min.js"),
+				asset("js/vendor/jquery.flot.resize.min.js"),
+			)
+		);
+	}
+	public function getChartData($leagueID) {
+		$league = League::findOrFail($leagueID);
+
+		$query = DB::table("league_user")->select("league_user.user_id", "movie_earnings.date", DB::raw("SUM(movie_earnings.domestic) as earnings"))
+		         ->where("league_user.league_id", $league->id)->wherePlayer(1)->whereNotNull("date")
+		         ->leftJoin("league_movie_user", 'league_movie_user.user_id', '=', 'league_user.user_id')
+		         ->leftJoin("movie_earnings", 'movie_earnings.movie_id', '=', 'league_movie_user.movie_id')
+		         ->groupBy("league_user.user_id", "movie_earnings.date")->orderBy("movie_earnings.date", "ASC")
+		;
+
+		$earnings = $query->get();
+		$data = $league->players->map(function($user) {
+			$object = new stdClass;
+			$object->label = $user->displayname;
+			$object->data = array();
+			$object->earliest = Carbon::tomorrow()->timestamp * 1000; // * 1000 is for javascript
+			return $object;
+		});
+		$lookup = array_combine($league->players->modelKeys(), $data->toArray());
+		$lookup[2]->label;
+
+		foreach ($earnings as $earned) {
+			$timestamp = strtotime($earned->date) * 1000;
+			if($lookup[$earned->user_id]->earliest > $timestamp) {
+				$lookup[$earned->user_id]->earliest = $timestamp;
+			}
+			$lookup[$earned->user_id]->data[] = array($timestamp, intval($earned->earnings));
+		}
+		foreach ($data as $user) {
+			$user->data = array_merge(array(array($user->earliest - 60*60*24*1000, 0)), $user->data);
+			unset($user->earliest);
+		}
+
+		return Response::json($data);
 	}
 
 	/* Admin functions */

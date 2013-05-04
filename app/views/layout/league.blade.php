@@ -3,6 +3,7 @@
 </div>
 <ul class="nav nav-tabs">
 	<li{{ Route::currentRouteAction() == "LeagueController@getView" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">Home</a></li>
+	<li{{ Route::currentRouteAction() == "LeagueController@getViewPlayers" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getViewPlayers", array("id" => $league->id, "slug" => $league->slug)) }}">Players</a></li>
 
 	@if(Auth::check() and $league->userIsAdmin(Auth::user()))
 		<li class="dropdown pull-right{{ Request::is('league/*-*/admin/*') ? ' active' : null }}">

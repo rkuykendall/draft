@@ -98,7 +98,11 @@
 	<script src="https://login.persona.org/include.js"></script>
 
 	<script src="{{ asset("js/vendor/bootstrap.min.js") }}"></script>
-
+	@if(isset($assets) and isset($assets["js"]))
+		@foreach($assets["js"] as $url)
+			<script src="{{ $url }}"></script>
+		@endforeach
+	@endif
 	<script src="{{ asset("js/main.js") }}"></script>
 
 	<script>
