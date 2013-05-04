@@ -163,7 +163,6 @@ class LeagueController extends BaseController {
 			return $object;
 		});
 		$lookup = array_combine($league->players->modelKeys(), $data->toArray());
-		$lookup[2]->label;
 
 		foreach ($earnings as $earned) {
 			$timestamp = strtotime($earned->date) * 1000;
