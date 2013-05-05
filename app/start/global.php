@@ -88,7 +88,6 @@ require __DIR__.'/../filters.php';
 */
 
 App::missing(function($exception) {
-	dd(Route::getFacadeRoot());
 	$layout = View::make("layout.main");
 	$layout->content = View::make("errors.404");
 	return Response::make($layout, 404);
