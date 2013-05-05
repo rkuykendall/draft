@@ -14,7 +14,7 @@
 					@foreach($player->movies as $movie)
 						<li>
 							<h5>{{{ $movie->name }}} <small>(Release date: {{{ $movie->release->toFormattedDateString() }}})</small></h5>
-							<p>Current earnings: {{{ '$'.number_format($movie->latestEarnings->domestic) }}} - Bought for {{{ $league->units.' '.$movie->lpivot->price }}} - {{{ '$'.number_format(round($movie->latestEarnings->domestic/$movie->lpivot->price, 2)).' per '.$league->units }}}</p>
+							<p>Current earnings: {{{ '$'.number_format($movie->latestEarnings->domestic) }}} - Bought for {{{ $league->units.' '.$movie->lpivot->price }}} - {{{ '$'.number_format(round($movie->latestEarnings->domestic/($movie->lpivot->price ?: 1), 2)).' per '.$league->units }}}</p>
 						</li>
 					@endforeach
 				</ul>
