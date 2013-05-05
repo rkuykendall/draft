@@ -162,7 +162,7 @@ class LeagueController extends BaseController {
 			$object = new stdClass;
 			$object->label = $user->displayname;
 			$object->data = array();
-			$object->earliest = Carbon::tomorrow()->timestamp * 1000; // * 1000 is for javascript
+			$object->earliest = Carbon::tomorrow()->subHours(19)->hour(0)->timestamp * 1000; // * 1000 is for javascript
 			return $object;
 		});
 		$lookup = array_combine($league->players->modelKeys(), $data->toArray());
