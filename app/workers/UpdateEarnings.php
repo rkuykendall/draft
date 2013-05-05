@@ -10,6 +10,10 @@ class UpdateEarnings {
 
 
 	public function fire($job, $data) {
+		if ($job->attempts() > 3) {
+			return $job->delete();
+		}
+
 		$movie = Movie::find($data["movie_id"]);
 		if(!$movie) {
 			$job->release(5);
@@ -51,17 +55,7 @@ class UpdateEarnings {
 	private function liberateBOE($mojoId) {
 		sleep(rand(1,8)); //hopefully this will help keep us on the dl
 
-		$doc = new DOMDocument();
-
-		//Wrap the loading function with a silent error wrapper as the site is not properly formed
-		try {
-			$doc->loadHTMLFile( $this->baseURL.$mojoId.'.htm' );
-		} catch(ErrorException $e) {}
-
-		/*
-		*  Yes, nothing like parsing html with regex :(  unfortunately the mark up is too f'd for the parser.
-		*/
-		$htmlString = $doc->saveHTML();
+		$htmlString = file_get_contents($this->baseURL.$mojoId.'.htm');
 		$matches;
 		$found = preg_match('/Domestic Total as of [\w\.]+\s*\d+,?\s*\d*:<\/font>\s*<b>\$([0-9,]*)/', $htmlString, $matches);
 
