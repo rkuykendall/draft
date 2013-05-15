@@ -28,7 +28,7 @@ class MovieSeeder extends Seeder {
 			array("name" => "Red 2", "boxmojo_id" => "red2", "release" => new DateTime("7/19/2013")),
 			array("name" => "The Wolverine", "boxmojo_id" => "wolverine2", "release" => new DateTime("7/26/2013")),
 			array("name" => "The Smurfs 2", "boxmojo_id" => "smurfs2", "release" => new DateTime("7/31/2013")),
-			array("name" => "300: Rise of An Empire", "boxmojo_id" => "300sequel", "release" => new DateTime("8/2/2013")),
+			array("name" => "2 Guns", "boxmojo_id" => "2guns", "release" => new DateTime("8/2/2013")),
 			array("name" => "Elysium", "boxmojo_id" => "elysium", "release" => new DateTime("8/9/2013")),
 			array("name" => "Planes", "boxmojo_id" => "planes", "release" => new DateTime("8/9/2013")),
 			array("name" => "Kick-Ass 2", "boxmojo_id" => "kickass2", "release" => new DateTime("8/16/2013")),
