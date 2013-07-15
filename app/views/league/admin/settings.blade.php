@@ -7,7 +7,7 @@
 	{{ Former::text("name") }}
 	{{ Former::xxlarge_textarea("description") }}
 	{{ Former::xxlarge_text("url") }}
-	{{ Former::checkbox("private")->blockHelp("This won't list the league in public directory. However anyone with the URL can still access it.") }}
+	{{ Former::checkbox("private")->value(1)->blockHelp("This won't list the league in public directory. However anyone with the URL can still access it.") }}
 	{{ Former::legend("League Settings") }}
 	{{ Former::text("money")->value(Config::get("draft.league_defaults.money")) }}
 	{{ Former::text("units")->value(Config::get("draft.league_defaults.units")) }}

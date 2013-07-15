@@ -2,7 +2,9 @@
 
 class League extends Eloquent {
 
-	public $dates = array("created_at", "updated_at");
+	public function getDates() {
+		return array_merge(parent::getDates(), array("end_date"));
+	}
 
 	/* Relationships */
 
@@ -11,7 +13,7 @@ class League extends Eloquent {
 	}
 
 	public function movies() {
-		return $this->belongsToMany('Movie')->withPivot('price')->orderBy('release', 'asc')->withTimestamps();
+		return $this->belongsToMany('Movie')->withPivot('price')->orderBy('release', 'asc')->orderBy('id', 'desc')->withTimestamps();
 	}
 
 	public function players() {
@@ -22,24 +24,6 @@ class League extends Eloquent {
 		return $this->belongsToMany('User')->orderBy('earnings_total', 'desc')->orderBy('league_user.id', 'asc')->withPivot('player', 'admin', 'earnings_total')->withTimestamps();
 	}
 
-	public function setRelation($relation, $value) {
-		parent::setRelation($relation, $value);
-
-		// Listen for users relation, use this to hydrate admins and players
-		if($relation == "users") {
-			$players = clone $value;
-			parent::setRelation("players", $players->filter(function($user) {
-				return $user->pivot->player;
-			}));
-			$admins = clone $value;
-			parent::setRelation("admins", $admins->filter(function($user) {
-				return $user->pivot->admin;
-			}));
-		}
-
-	}
-
-
 	public function userIsAdmin($user) {
 		if(isset($this->relations["admins"])) {
 			return $this->admins->contains($user->id);
@@ -48,16 +32,8 @@ class League extends Eloquent {
 		}
 	}
 
-
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */
-	// end_date
-	public function getEndDateAttribute($value) {
-		/* Cannot use $dates due to format */
-		if (!($value instanceof DateTime)) {
-			return Carbon::createFromFormat('Y-m-d', $value);
-		}
-		return Carbon::instance($value);
-	}
+
 	// name =
 	public function setNameAttribute($value = '') {
 		if(!$this->slug) {
@@ -79,6 +55,5 @@ class League extends Eloquent {
 		}
 		$this->attributes["name"] = $value;
 	}
-
 
 }

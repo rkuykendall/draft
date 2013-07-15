@@ -28,7 +28,7 @@ class LeaguePrivateAndFeatured extends Migration {
 	{
 		Schema::table('leagues', function($table)
 		{
-			$table->dropColumns(array('private', 'featured'));
+			$table->dropColumn('private', 'featured');
 		});
 	}
 

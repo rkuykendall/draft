@@ -19,10 +19,10 @@ class UpdateEarnings {
 			$job->release(5);
 			return;
 		}
-		$earnings = $movie->earnings()->where('date', '=', (new DateTime())->format("Y-m-d"))->first();
+		$earnings = $movie->earnings()->where('date', (new Carbon())->tz("America/Los_Angeles")->format("Y-m-d"))->first();
 
 		if(!$earnings) {
-			$earnings = new MovieEarning(array("movie_id" => $movie->id, "date" => new DateTime()));
+			$earnings = new MovieEarning(array("movie_id" => $movie->id, "date" => (new Carbon())->tz("America/Los_Angeles")));
 		}
 
 		$money = $this->liberateBOE($movie->boxmojo_id);
@@ -36,9 +36,9 @@ class UpdateEarnings {
 		if(!$movie->latestEarnings or $earnings->date > $movie->latestEarnings->date) {
 			$movie->latest_earnings_id = $earnings->id;
 			$movie->save();
-			// Queue up league user updates
 		}
 
+		// Queue up league user updates
 		foreach ($movie->users as $user) {
 			Queue::push("UpdateUserEarnings", array(
 				"user_id" => $user->id, "league_id" => $user->pivot->league_id, "since" => $earnings->updated_at->format('U')
@@ -53,7 +53,8 @@ class UpdateEarnings {
 	*  @return int
 	*/
 	private function liberateBOE($mojoId) {
-		sleep(rand(1,8)); //hopefully this will help keep us on the dl
+		// Using queue delays instead, sleep left in for local/noqueue systems
+		usleep(rand(0,1000000)); //hopefully this will help keep us on the dl
 
 		$htmlString = file_get_contents($this->baseURL.$mojoId.'.htm');
 		$matches;

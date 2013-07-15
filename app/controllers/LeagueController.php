@@ -95,7 +95,7 @@ class LeagueController extends BaseController {
 				}
 			});
 			$player->buytotal = array_sum($player->movies->map(function($movie) {
-				return $movie->lpivot->price;
+				return $movie->league_pivot->price;
 			})->toArray());
 		});
 
@@ -128,7 +128,7 @@ class LeagueController extends BaseController {
 				}
 			});
 			$player->buytotal = array_sum($player->movies->map(function($movie) {
-				return $movie->lpivot->price;
+				return $movie->league_pivot->price;
 			})->toArray());
 		});
 

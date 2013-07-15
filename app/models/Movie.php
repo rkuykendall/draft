@@ -2,7 +2,9 @@
 
 class Movie extends Eloquent {
 
-	public $dates = array("created_at", "updated_at");
+	public function getDates() {
+		return array_merge(parent::getDates(), array("release"));
+	}
 
 	/* Relations */
 	public function users() {
@@ -19,18 +21,9 @@ class Movie extends Eloquent {
 		return $this->belongsTo('MovieEarning');
 	}
 
-	/* Accessors & Mutators (aka. fancy words for getters and setters) */
-	// release
-	public function getReleaseAttribute($value) {
-		/* Cannot use $dates due to format */
-		if (!($value instanceof DateTime)) {
-			return Carbon::createFromFormat('Y-m-d', $value);
-		}
-		return Carbon::instance($value);
-	}
-
 	public function grabLeaguePivot($lmovie) {
-		$this->setRelation("lpivot", $lmovie->pivot);
+		$this->setRelation("league_pivot", $lmovie->pivot);
 		$this->setRelation("latestEarnings", $lmovie->latestEarnings);
 	}
+
 }

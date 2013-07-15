@@ -4,24 +4,28 @@
 <div class="row">
 	<div class="span8">
 		<h2>Overview</h2>
-		<ol>
-			@foreach($league->players as $player)
-				<li class="player">
-					<h3>{{{ $player->displayname }}}</h3>
-					<span class="player-money pull-right">Total: ${{{ number_format($player->pivot->earnings_total) }}} <small class="muted">for {{ e($league->units).' '.$player->buytotal.' / '.$league->units.' '.$league->money }}</small></span>
-					@if(count($player->movies) > 0)
+		@if(count($league->players) > 0)
+			<ol>
+				@foreach($league->players as $player)
+					<li class="player">
+						<h3>{{{ $player->displayname }}}</h3>
+						<span class="player-money pull-right">Total: ${{{ number_format($player->pivot->earnings_total) }}} <small class="muted">for {{ e($league->units).' '.$player->buytotal.' / '.$league->units.' '.$league->money }}</small></span>
+						@if(count($player->movies) > 0)
 <?php
 $movieNames = $player->movies->map(function($movie) use($league) {
-	return e($movie->name).' <span class="muted">('.e($league->units).' '.$movie->lpivot->price.')</span>';
+	return e($movie->name).' <span class="muted">('.e($league->units).' '.$movie->league_pivot->price.')</span>';
 });
 echo '<p>Movies: '.implode(', ', $movieNames->toArray()).'</p>';
 ?>
-					@else
-						<p>Movies: None</p>
-					@endif
-				</li>
-			@endforeach
-		</ol>
+						@else
+							<p>Movies: None</p>
+						@endif
+					</li>
+				@endforeach
+			</ol>
+		@else
+			<p>This league currently has no players :(</p>
+		@endif
 	</div>
 	<div class="span4">
 		<small class="muted">About</small>

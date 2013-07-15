@@ -13,6 +13,8 @@
 
 $app = new Illuminate\Foundation\Application;
 
+$app->redirectIfTrailingSlash();
+
 /*
 |--------------------------------------------------------------------------
 | Detect The Application Environment
@@ -26,8 +28,8 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'production' => array('draft.t2t2.eu'),
-	'local' => array('t2t2', '*.dev'),
+	'local' => array('*.dev', 'vagrant', 'devbox'),
+	'production' => array('t2t2', 'draft.t2t2.eu'),
 
 ));
 

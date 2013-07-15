@@ -28,7 +28,7 @@ class AddLeagueSettings extends Migration {
 	{
 		Schema::table('leagues', function($table)
 		{
-			$table->dropColumns('mode', 'units');
+			$table->dropColumn('mode', 'units');
 		});
 	}
 

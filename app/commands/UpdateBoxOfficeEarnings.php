@@ -50,11 +50,13 @@ class UpdateBoxOfficeEarnings extends Command {
 		// TODO: Check only for active leagues
 		$movies = DB::table('movies')->where('release', '<', new DateTime())->get(array('id'));
 
+		$delay = 0;
 		foreach ($movies as $movie) {
-			Queue::push("UpdateEarnings", array("movie_id" => $movie->id));
+			$delay += rand(1, 5);
+			Queue::later($delay, "UpdateEarnings", array("movie_id" => $movie->id));
 		}
 
-		Queue::push(function($job) {
+		Queue::later($delay, function($job) {
 			Cache::forever("last_update", Carbon::now());
 
 			$job->delete();

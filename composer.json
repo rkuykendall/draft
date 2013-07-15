@@ -1,5 +1,6 @@
 {
 	"require": {
+		"raveren/kint": "dev-master",
 		"laravel/framework": "4.0.*",
 		"loic-sharma/profiler": "1.0.*",
 		"guzzle/guzzle": "~3.1.1",
@@ -7,9 +8,6 @@
 		"edvinaskrucas/notification": "1.*",
 		"pda/pheanstalk": "2.1.*",
 		"barryvdh/laravel-ide-helper": "dev-master"
-	},
-	"require-dev": {
-		"raveren/kint": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
@@ -23,11 +21,19 @@
 		]
 	},
 	"scripts": {
+		"post-install-cmd": [
+			"php artisan ide-helper:generate",
+			"php artisan optimize"
+		],
 		"pre-update-cmd": [
 			"php artisan clear-compiled"
 		],
 		"post-update-cmd": [
+			"php artisan ide-helper:generate",
 			"php artisan optimize"
+		],
+		"post-create-project-cmd": [
+			"php artisan key:generate"
 		]
 	},
 	"config": {

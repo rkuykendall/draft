@@ -80,6 +80,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .upcomingSeparator span { background-color: #FFF; padding: 0 5px; }
 
+/* Anbu bootstrap */
+.anbu pre {
+	padding: 0 !important;
+	background: none !important;
+	border: none !important;
+}
 
 /* Mozilla Persona */
 /* Link body */

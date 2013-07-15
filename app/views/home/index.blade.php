@@ -8,7 +8,7 @@
 		</ol>
 	</div>
 	<div class="span4">
-		<h1>DISCLAIMER DISCLAIMER DISCLAIMER</h1>
+		<h2>DISCLAIMER DISCLAIMER DISCLAIMER</h2>
 		<p>This is alpha. Really alpha. Like it might break at any second. You've been warned.</p>
 		<h2>Create your own league</h2>
 		@if(Auth::check())

@@ -2,6 +2,7 @@
 
 class LeagueMovieSeeder extends Seeder {
 	public function run() {
+		$this->command->info("Adding movies to the league...");
 		$league = League::find(1);
 		$movies = Movie::all();
 		$wentfor = array(

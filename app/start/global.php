@@ -81,37 +81,44 @@ App::down(function()
 |
 */
 
-require __DIR__.'/../filters.php';
+require app_path().'/filters.php';
 
 /*
-| 404 page
+|--------------------------------------------------------------------------
+| Layout defaults
+|--------------------------------------------------------------------------
 */
-
-App::missing(function($exception) {
-	$layout = View::make("layout.main");
-	$layout->content = View::make("errors.404");
-	return Response::make($layout, 404);
-});
-
-// See Model::findOrFail()
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-App::error(function(ModelNotFoundException $e) {
-	$layout = View::make("layout.main");
-	$layout->content = View::make("errors.404");
-	return Response::make($layout, 404);
-});
-
-/*
-| Defaults
-*/
-View::composer("layout.main", function ($view) {
+View::composer('layout.main', function($view) {
+	// Translate js settings into data attribs
 	if(!isset($view->javascript)) {
 		$view->javascript = array();
 	}
+	$jsdata = array(
+		'url' => url(),
+		'asset-url' => asset(''),
+		'csrf' => Session::getToken()
+	);
+	if(isset($view->javascript[0])) {
+		$jsdata['controller'] = $view->javascript[0];
+	}
+	if(isset($view->javascript[1])) {
+		$jsdata['action'] = $view->javascript[1];
+	}
+	if(Auth::check()) {
+		$jsdata['user'] = Auth::user()->email;
+	}
+	$view->jsdata = "";
+	foreach ($jsdata as $key => $value) {
+		$view->jsdata .= ' data-'.$key.'="'.e($value).'"';
+	}
+
+	// Empty content
 	if(!isset($view->content)) {
 		$view->content = "";
 	}
+
 	$view->last_update = Cache::rememberForever('last_update', function() {
-	    return MovieEarning::asDateTime(MovieEarning::max("updated_at"));
+		return MovieEarning::asDateTime(MovieEarning::max("updated_at") ?: '1970-01-01');
 	});
+
 });

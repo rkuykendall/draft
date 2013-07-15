@@ -86,13 +86,13 @@ DRAFTR = {
 						}, 2000);
 					}
 				});
-				return;
+				return false;
 			});
 			$('#js-logout').click(function () {
 				$('#js-user').hide()
 				$('#js-logout-status').fadeIn(1000).html('<i class="icon-spinner icon-spin"></i> Logging out...')
 				navigator.id.logout();
-				return;
+				return false;
 			});
 		}
 	},
@@ -112,7 +112,9 @@ DRAFTR = {
 
 	league: {
 		players: function () {
-			DRAFTR.league.drawChart($("#earnings-chart"))
+			if($("#earnings-chart").length) {
+				DRAFTR.league.drawChart($("#earnings-chart"))
+			}
 		},
 
 		chartData: null,
@@ -229,7 +231,7 @@ $.fn.autoComplete = function() {
 		$dropDown.delegate('a', 'click', function(){ $input.val($(this).html()); $dropDown.hide(); });
 	});
 };
-})(jQuery);
+})($);
 
 /* http://stackoverflow.com/a/2866613/211088
 decimal_sep: character used as deciaml separtor, it defaults to '.' when omitted

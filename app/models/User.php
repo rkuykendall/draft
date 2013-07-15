@@ -3,7 +3,8 @@
 use Illuminate\Auth\UserInterface;
 
 class User extends Eloquent implements UserInterface {
-	public $dates = array("created_at", "updated_at");
+
+	protected $hidden = array('email');
 
 	/* Relationships */
 
@@ -11,12 +12,13 @@ class User extends Eloquent implements UserInterface {
 		return $this->belongsToMany('League')->withPivot('player', 'admin')->withTimestamps();
 	}
 	public function movies() {
-		// Only if called via league
+		// If called via league->user>movies only get movies related to the league
 		if(!$this->pivot or $this->pivot->getTable() != "league_user") {
 			return $this->belongsToMany('Movie', 'league_movie_user');
 		}
 		return $this->belongsToMany('Movie', 'league_movie_user')->withPivot('league_id')->where('league_id', $this->pivot->league_id)->orderBy('release', 'asc');
 	}
+
 
 	/* Accessors & Mutators (aka. fancy words for getters and setters) */
 
@@ -26,13 +28,11 @@ class User extends Eloquent implements UserInterface {
 
 	/* UserInterface */
 
-	public function getAuthIdentifier()
-	{
+	public function getAuthIdentifier() {
 		return $this->getKey();
 	}
 
-	public function getAuthPassword()
-	{
+	public function getAuthPassword() {
 		return Hash::make("moz:persona");
 	}
 

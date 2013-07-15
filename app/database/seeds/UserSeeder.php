@@ -2,13 +2,17 @@
 
 class UserSeeder extends Seeder {
 	public function run() {
+		$this->command->info("Adding users...");
 		DB::table("users")->delete();
 
+		$admin_user = $this->command->ask("Please enter the username for the admin user: ");
+		$admin_email = $this->command->ask("Please enter the email for the admin user: ", Config::get("app.admin_email"));
 		$users = array(
 			array(
 				'id' => '1',
-				'username' => 't2t2',
+				'username' => $admin_user,
 				'admin' => true,
+				'email' => $admin_email
 			),
 			array(
 				'id' => '2',
