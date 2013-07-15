@@ -5,8 +5,7 @@
 	<title>DRAFTR WILL BE RIGHT BACK</title>
 
 	<link href='http://fonts.googleapis.com/css?family=Oxygen:400,700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="{{ asset("css/bootstrap-combined.no-icons.min.css") }}">
-	<link rel="stylesheet" href="{{ asset("css/font-awesome.min.css") }}">
+	<link rel="stylesheet" href="{{ asset("css/bootstrap-combined.font-awesome.min.css") }}">
 	<link rel="stylesheet" href="{{ asset("css/main.css") }}">
 
 	<script src="{{ asset("js/vendor/modernizr-2.6.2-respond-1.1.0.min.js") }}"></script>
