@@ -84,6 +84,25 @@ App::down(function()
 require app_path().'/filters.php';
 
 /*
+| 404 page
+*/
+
+App::missing(function($exception) {
+	$layout = View::make("layout.main");
+	$layout->content = View::make("errors.404");
+	return Response::make($layout, 404);
+});
+
+// See Model::findOrFail()
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+App::error(function(ModelNotFoundException $e) {
+	$layout = View::make("layout.main");
+	$layout->content = View::make("errors.404");
+	return Response::make($layout, 404);
+});
+
+
+/*
 |--------------------------------------------------------------------------
 | Layout defaults
 |--------------------------------------------------------------------------
