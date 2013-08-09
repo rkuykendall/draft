@@ -3,7 +3,7 @@
 		{{{ $user->displayname }}}
 		<small>({{{ $user->username }}})</small>
 		@if($user->admin)
-			<i class="pull-right icon-wrench" title="Draftr Admin"></i>
+			<i class="pull-right icon-wrench" title="Box Office Draft Admin"></i>
 		@endif
 	</h1>
 </div>
@@ -11,7 +11,7 @@
 @if(count($user->leagues) > 0)
 	@foreach($user->leagues as $league)
 		@if($league->featured)
-			<i class="icon-star-empty icon-3x pull-right" title="Featured by Draftr admins"></i>
+			<i class="icon-star-empty icon-3x pull-right" title="Featured by Box Office Draft admins"></i>
 		@endif
 		<h3><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">
 			{{{ $league->name }}}

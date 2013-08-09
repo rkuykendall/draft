@@ -77,7 +77,7 @@ DRAFTR = {
 				$('#js-login').hide()
 				$('#js-login-status').fadeIn(1000).html('<i class="icon-spinner icon-spin"></i> Waiting on user...')
 				navigator.id.request({
-					siteName: 'Draftr',
+					siteName: 'Box Office Draft',
 					oncancel: function () {
 						$('#js-login-status').html("Cancelled by user")
 						setTimeout(function function_name (argument) {

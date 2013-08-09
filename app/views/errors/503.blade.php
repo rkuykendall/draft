@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>DRAFTR WILL BE RIGHT BACK</title>
+	<title>BOX OFFICE DRAFT WILL BE RIGHT BACK</title>
 
 	<link href='http://fonts.googleapis.com/css?family=Oxygen:400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="{{ asset("css/bootstrap-combined.font-awesome.min.css") }}">

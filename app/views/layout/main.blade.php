@@ -6,7 +6,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>{{{ isset($title) ? $title.' | ' : null }}}Draftr</title>
+	<title>{{{ isset($title) ? $title.' | ' : null }}}Box Office Draft</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 
@@ -29,7 +29,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="{{ url('/') }}">Draftr <sup>&alpha;</sup></a>
+				<a class="brand" href="{{ url('/') }}">Box Office Draft <sup>&alpha;</sup></a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li{{ Request::is('/') ? ' class="active"' : null}}><a href="{{ url('/') }}">Home</a></li>
@@ -86,7 +86,7 @@
 		<hr>
 
 		<footer>
-			<p>Draftr 2013 - <i class="icon-heart-empty"></i> <a href="https://github.com/t2t2/draft" target="_blank">opensource</a> - Powered by unicorns and <a href="http://www.laravel.com/" target="_blank">Laravel 4</a></p>
+			<p>Box Office Draft 2013 - <i class="icon-heart-empty"></i> <a href="https://github.com/t2t2/draft" target="_blank">opensource</a> - Powered by unicorns and <a href="http://www.laravel.com/" target="_blank">Laravel 4</a></p>
 			<p>Latest Data Update: <span title="{{ $last_update->toCOOKIEString() }}">{{ $last_update->diffForHumans() }}</span></p>
 		</footer>
 
