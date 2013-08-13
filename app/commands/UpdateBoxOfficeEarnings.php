@@ -46,21 +46,28 @@ class UpdateBoxOfficeEarnings extends Command {
 	 */
 	public function fire()
 	{
-		// Get movies that are released
-		// TODO: Check only for active leagues
-		$movies = DB::table('movies')->where('release', '<', new DateTime())->get(array('id'));
+		// Get movies that are used in an active league and already released
+		$movies = DB::table('movies')->where('movies.release', '<', new DateTime())
+		            ->join('league_movie', 'movies.id', '=', 'league_movie.movie_id')
+		            ->join('leagues', 'league_movie.league_id', '=', 'leagues.id')
+		            ->where('leagues.end_date', '>', new DateTime()) // Inner join filters out all non-valid movies
+		            ->groupBy('movies.id')
+		            ->get(array('movies.id', DB::raw('COUNT(leagues.id) as UsedCount')));
 
+		// Queue up
 		$delay = 0;
 		foreach ($movies as $movie) {
 			$delay += rand(1, 5);
 			Queue::later($delay, "UpdateEarnings", array("movie_id" => $movie->id));
 		}
 
+		// Update last update date
 		Queue::later($delay, function($job) {
 			Cache::forever("last_update", Carbon::now());
 
 			$job->delete();
 		});
+
 	}
 
 	/**

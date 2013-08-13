@@ -56,4 +56,13 @@ class League extends Eloquent {
 		$this->attributes["name"] = $value;
 	}
 
+	// League active
+	public function getActive($value = '') {
+		return $this->end_date->isFuture();
+	}
+
+	/* Query Scope */
+	public function scopeActive($query) {
+		return $query->where('end_date', '>', Carbon::now());
+	}
 }

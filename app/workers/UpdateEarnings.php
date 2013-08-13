@@ -39,7 +39,13 @@ class UpdateEarnings {
 		}
 
 		// Queue up league user updates
-		foreach ($movie->users as $user) {
+		// Update only leagues that are active
+		$users = $movie->users()
+		               ->join('leagues', 'league_movie_user.league_id', '=', 'leagues.id')
+		               ->where('leagues.end_date', '>', new DateTime()) // Inner join filters out all non-valid movies
+		               ->get();
+
+		foreach ($users as $user) {
 			Queue::push("UpdateUserEarnings", array(
 				"user_id" => $user->id, "league_id" => $user->pivot->league_id, "since" => $earnings->updated_at->format('U')
 			));
