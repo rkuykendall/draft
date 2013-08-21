@@ -154,6 +154,7 @@ class LeagueController extends BaseController {
 		         	$join->on("league_movie_user.league_id", "=", "league_user.league_id");
 		         })
 		         ->leftJoin("movie_earnings", "movie_earnings.movie_id", "=", "league_movie_user.movie_id")
+		         ->where('movie_earnings.date', '<=', $league->end_date)
 		         ->groupBy("league_user.user_id", "movie_earnings.date")->orderBy("movie_earnings.date", "ASC")
 		;
 
