@@ -5,7 +5,7 @@
 	<li{{ Route::currentRouteAction() == "LeagueController@getView" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">Home</a></li>
 	<li{{ Route::currentRouteAction() == "LeagueController@getViewPlayers" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getViewPlayers", array("id" => $league->id, "slug" => $league->slug)) }}">Players</a></li>
 
-	@if(Auth::check() and $league->userIsAdmin(Auth::user()))
+	@if(Auth::check() and $league->userIsAdmin(Auth::user()) and $league->active)
 		<li class="dropdown pull-right{{ Request::is('league/*-*/admin/*') ? ' active' : null }}">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <b class="caret"></b></a>
 			<ul class="dropdown-menu">
@@ -16,5 +16,11 @@
 		</li>
 	@endif
 </ul>
+
+@if(!$league->active)
+<div class="alert alert-info">
+	This league ended on {{ $league->end_date->toFormattedDateString() }}
+</div>
+@endif
 
 @yield("content")

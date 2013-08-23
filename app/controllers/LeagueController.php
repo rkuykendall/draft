@@ -200,6 +200,10 @@ class LeagueController extends BaseController {
 		if(!$league->userIsAdmin(Auth::user())) {
 			App::abort(404);
 		}
+		if(!$league->active) {
+			Notification::error("League is now archived.");
+			return Redirect::action("LeagueController@getView", array($league->id, $league->slug));
+		}
 
 		$this->layout->title = "Settings | Admin | ".$league->name;
 		$this->layout->content = View::make("league.admin.settings", array(
@@ -212,6 +216,10 @@ class LeagueController extends BaseController {
 		}
 		if(!$league->userIsAdmin(Auth::user())) {
 			App::abort(404);
+		}
+		if(!$league->active) {
+			Notification::error("League is now archived.");
+			return Redirect::action("LeagueController@getView", array($league->id, $league->slug));
 		}
 
 		$validator = Validator::make(Input::all(), $this->league_edit_valid_rules);
@@ -244,6 +252,10 @@ class LeagueController extends BaseController {
 		if(!$league->userIsAdmin(Auth::user())) {
 			App::abort(404);
 		}
+		if(!$league->active) {
+			Notification::error("League is now archived.");
+			return Redirect::action("LeagueController@getView", array($league->id, $league->slug));
+		}
 
 		$this->layout->title = "Users | Admin | ".$league->name;
 		$this->layout->content = View::make("league.admin.users", array(
@@ -256,6 +268,10 @@ class LeagueController extends BaseController {
 		}
 		if(!$league->userIsAdmin(Auth::user())) {
 			App::abort(404);
+		}
+		if(!$league->active) {
+			Notification::error("League is now archived.");
+			return Redirect::action("LeagueController@getView", array($league->id, $league->slug));
 		}
 
 		// Get the user
@@ -366,6 +382,10 @@ class LeagueController extends BaseController {
 		if(!$league->userIsAdmin(Auth::user())) {
 			App::abort(404);
 		}
+		if(!$league->active) {
+			Notification::error("League is now archived.");
+			return Redirect::action("LeagueController@getView", array($league->id, $league->slug));
+		}
 
 		$league->movies->load("users");
 		// Preformatted for your satisfaction
@@ -384,6 +404,10 @@ class LeagueController extends BaseController {
 		}
 		if(!$league->userIsAdmin(Auth::user())) {
 			App::abort(404);
+		}
+		if(!$league->active) {
+			Notification::error("League is now archived.");
+			return Redirect::action("LeagueController@getView", array($league->id, $league->slug));
 		}
 
 		$league->movies->load("users");
