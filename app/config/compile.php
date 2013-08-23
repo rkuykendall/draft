@@ -88,8 +88,8 @@ return array(
 	'vendor/edvinaskrucas/notification/src/Krucas/Notification/Collection.php',
 
 	// former
-	'vendor/anahkiasen/former/src/Former/FormerServiceProvider.php',
-	'vendor/anahkiasen/former/src/Former/Facades/Agnostic.php',
-	'vendor/anahkiasen/former/src/Former/Facades/FormerBuilder.php',
+//	'vendor/anahkiasen/former/src/Former/FormerServiceProvider.php',
+//	'vendor/anahkiasen/former/src/Former/Facades/Agnostic.php',
+//	'vendor/anahkiasen/former/src/Former/Facades/FormerBuilder.php',
 
 );
