@@ -33,6 +33,8 @@ Route::get('league/{id}-{slug?}', 'LeagueController@getView');
 Route::get('league/{id}', 'LeagueController@getView');
 Route::get('league/{id}-{slug?}/players', 'LeagueController@getViewPlayers');
 Route::get('league/{id}/players', 'LeagueController@getViewPlayers');
+Route::get('league/{id}-{slug?}/movies', 'LeagueController@getViewMovies');
+Route::get('league/{id}/movies', 'LeagueController@getViewMovies');
 Route::get('league/{id}/chart', 'LeagueController@getChartData');
 
 Route::get('league/{id}-{slug?}/admin/settings', 'LeagueController@getAdminSettings');

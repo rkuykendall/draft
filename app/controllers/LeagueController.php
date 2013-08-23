@@ -183,6 +183,27 @@ class LeagueController extends BaseController {
 		return Response::json($data);
 	}
 
+	public function getViewMovies($leagueID, $leagueSlug = '') {
+		$league = League::findOrFail($leagueID);
+		if($leagueSlug != $league->slug) {
+			return Redirect::to("league/{$league->id}-{$league->slug}/movies");
+		}
+
+		$league->load('movies');
+		$league->movies->load('latestEarnings');
+		$league->movies->load('users');
+		// Link up draft-movie pivot
+		$league->movies->each(function($movie) {
+			if(!$movie->latestEarnings) {
+				$movie->setRelation("latestEarnings", new MovieEarning(array("domestic" => 0)));
+			}
+		});
+
+
+		$this->layout->title = "Movies | ". $league->name;
+		$this->layout->content = View::make("league.movies", compact("league"));
+	}
+
 	/* Admin functions */
 	// League settings
 	public $league_edit_valid_rules = array(

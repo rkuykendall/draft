@@ -4,6 +4,7 @@
 <ul class="nav nav-tabs">
 	<li{{ Route::currentRouteAction() == "LeagueController@getView" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">Home</a></li>
 	<li{{ Route::currentRouteAction() == "LeagueController@getViewPlayers" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getViewPlayers", array("id" => $league->id, "slug" => $league->slug)) }}">Players</a></li>
+	<li{{ Route::currentRouteAction() == "LeagueController@getViewMovies" ? ' class="active"' : null }}><a href="{{ action("LeagueController@getViewMovies", array("id" => $league->id, "slug" => $league->slug)) }}">Movies</a></li>
 
 	@if(Auth::check() and $league->userIsAdmin(Auth::user()) and $league->active)
 		<li class="dropdown pull-right{{ Request::is('league/*-*/admin/*') ? ' active' : null }}">
