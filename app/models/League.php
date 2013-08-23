@@ -57,7 +57,7 @@ class League extends Eloquent {
 	}
 
 	// League active
-	public function getActive($value = '') {
+	public function getActiveAttribute($value = '') {
 		return $this->end_date->isFuture();
 	}
 
