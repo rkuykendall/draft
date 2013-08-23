@@ -1,6 +1,5 @@
 {
 	"require": {
-		"raveren/kint": "dev-master",
 		"laravel/framework": "4.0.*",
 		"loic-sharma/profiler": "1.0.*",
 		"guzzle/guzzle": "~3.1.1",

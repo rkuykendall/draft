@@ -13,6 +13,83 @@ return array(
 	|
 	*/
 
+	// Carbon
+	'vendor/nesbot/carbon/src/Carbon/Carbon.php',
 
+	// database-specific stuff
+	'vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectorInterface.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Connection.php',
+	'vendor/laravel/framework/src/Illuminate/Database/ConnectionInterface.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Query/Grammars/Grammar.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Connectors/Connector.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Connectors/MySqlConnector.php',
+	'vendor/laravel/framework/src/Illuminate/Database/MySqlConnection.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Grammar.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Query/Grammars/MySqlGrammar.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Query/Processors/Processor.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Eloquent/Relations/Relation.php',
+	
+	// eloquent and fluent stuff
+	'vendor/laravel/framework/src/Illuminate/Support/Collection.php',
+	'vendor/laravel/framework/src/Illuminate/Database/Eloquent/Collection.php',
+	
+	'vendor/laravel/framework/src/Illuminate/Support/Pluralizer.php',
+
+	// controller-specific stuff
+	'vendor/laravel/framework/src/Illuminate/Routing/ControllerServiceProvider.php',
+	'vendor/laravel/framework/src/Illuminate/Routing/Controllers/Controller.php',
+	'vendor/laravel/framework/src/Illuminate/Routing/Controllers/Inspector.php',
+	'vendor/laravel/framework/src/Illuminate/Routing/Controllers/Filter.php',
+	'vendor/laravel/framework/src/Illuminate/Routing/Controllers/Before.php',
+	'vendor/laravel/framework/src/Illuminate/Routing/Controllers/After.php',
+	'vendor/laravel/framework/src/Illuminate/Routing/Controllers/FilterParser.php',
+	
+	// URL generator
+	'vendor/symfony/routing/Symfony/Component/Routing/Generator/ConfigurableRequirementsInterface.php',
+	'vendor/symfony/routing/Symfony/Component/Routing/Generator/UrlGeneratorInterface.php',
+	'vendor/symfony/routing/Symfony/Component/Routing/Generator/UrlGenerator.php',
+	'vendor/laravel/framework/src/Illuminate/Routing/UrlGenerator.php',
+
+	// view
+	'vendor/laravel/framework/src/Illuminate/View/Compilers/BladeCompiler.php',
+	'vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php',
+	'vendor/laravel/framework/src/Illuminate/View/Compilers/CompilerInterface.php',
+	'vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php',
+
+	'vendor/laravel/framework/src/Illuminate/Support/Facades/Request.php',
+
+	// auth
+	'vendor/laravel/framework/src/Illuminate/Support/Facades/Auth.php',
+	'vendor/laravel/framework/src/Illuminate/Auth/AuthServiceProvider.php',
+	'vendor/laravel/framework/src/Illuminate/Auth/AuthManager.php',
+	'vendor/laravel/framework/src/Illuminate/Auth/EloquentUserProvider.php',
+	'vendor/laravel/framework/src/Illuminate/Auth/UserInterface.php',
+	'vendor/laravel/framework/src/Illuminate/Auth/UserProviderInterface.php',
+	'vendor/laravel/framework/src/Illuminate/Hashing/HashServiceProvider.php',
+	'vendor/laravel/framework/src/Illuminate/Hashing/BcryptHasher.php',
+	'vendor/laravel/framework/src/Illuminate/Hashing/HasherInterface.php',
+	'vendor/laravel/framework/src/Illuminate/Auth/Guard.php',
+
+	// cache
+	'vendor/laravel/framework/src/Illuminate/Support/Facades/Cache.php',
+	'vendor/laravel/framework/src/Illuminate/Cache/CacheServiceProvider.php',
+	'vendor/laravel/framework/src/Illuminate/Cache/CacheManager.php',
+	'vendor/laravel/framework/src/Illuminate/Cache/FileStore.php',
+	'vendor/laravel/framework/src/Illuminate/Cache/StoreInterface.php',
+	'vendor/laravel/framework/src/Illuminate/Cache/Repository.php',
+
+	// notifications
+//	'vendor/edvinaskrucas/notification/src/Krucas/Notification/NotificationServiceProvider.php',
+	'vendor/edvinaskrucas/notification/src/Krucas/Notification/Facades/Notification.php',
+	'vendor/edvinaskrucas/notification/src/Krucas/Notification/Notification.php',
+	'vendor/edvinaskrucas/notification/src/Krucas/Notification/NotificationsBag.php',
+	'vendor/edvinaskrucas/notification/src/Krucas/Notification/Collection.php',
+
+	// former
+	'vendor/anahkiasen/former/src/Former/FormerServiceProvider.php',
+	'vendor/anahkiasen/former/src/Former/Facades/Agnostic.php',
+	'vendor/anahkiasen/former/src/Former/Facades/FormerBuilder.php',
 
 );
