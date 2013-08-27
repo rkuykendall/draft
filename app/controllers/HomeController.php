@@ -106,6 +106,8 @@ class HomeController extends BaseController {
 		$user->email = Session::get("register_email");
 		if($user->save()) {
 			Auth::login($user, true);
+			Session::forget("register_email");
+
 			Notification::success("Welcome {$user->displayname}!");
 			return Redirect::to("/");
 		} else {

@@ -14,6 +14,9 @@
 App::before(function($request) {
 	// Force back if in regstration mode.
 	if(Session::has("register_email") and !($request->is("logout") or $request->is("register"))) {
+		if(Auth::check()) { // False positive, aka forgot to delete the session
+			Session::forget("register_email");
+		}
 		return Redirect::to("register");
 	}
 
