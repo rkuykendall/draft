@@ -23,7 +23,7 @@
 			{{ Former::token() }}
 			{{ Former::hidden("action", "add") }}
 			{{ Former::hidden("type", "player") }}
-			{{ Former::text("username")->required()->setAttribute('autocomplete', 'off')->data_autocomplete(true)->data_route('users/lookup/')->data_request_data('{"type": "player"}')->forceValue(Input::old("type") == "player" ? Input::old("username") : "") }}
+			{{ Former::text("username")->required()->setAttribute('autocomplete', 'off')->data_autocomplete(true)->data_route(action("LeagueAdminController@userLookup", array("league_id" => $league->id)).'/')->data_request_data('{"type": "player"}')->forceValue(Input::old("type") == "player" ? Input::old("username") : "") }}
 			{{ Former::primary_submit("Add") }}
 		{{ Former::close() }}
 	</div>
@@ -52,15 +52,11 @@
 			{{ Former::token() }}
 			{{ Former::hidden("action", "add") }}
 			{{ Former::hidden("type", "admin") }}
-			{{ Former::text("username")->required()->setAttribute('autocomplete', 'off')->data_autocomplete(true)->data_route('users/lookup/')->data_request_data('{"type": "admin"}')->forceValue(Input::old("type") == "admin" ? Input::old("username") : "") }}
+			{{ Former::text("username")->required()->setAttribute('autocomplete', 'off')->data_autocomplete(true)->data_route(action('LeagueAdminController@userLookup', array('league_id' => $league->id)).'/')->data_request_data('{"type": "admin"}')->forceValue(Input::old("type") == "admin" ? Input::old("username") : "") }}
 			{{ Former::primary_submit("Add") }}
 		{{ Former::close() }}
 	</div>
 </div>
-
-
-
-
 
 
 @stop

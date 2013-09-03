@@ -3,7 +3,7 @@
 @section("content")
 <h2>Players</h2>
 @if(count($league->players) > 0)
-	<div id="earnings-chart" data-source="{{{ action("LeagueController@getChartData", array("id" => $league->id)) }}}"></div>
+	<div id="earnings-chart" data-source="{{{ action("LeagueController@getChartData", array("league_id" => $league->id)) }}}"></div>
 	<ol id="players">
 		@foreach($league->players as $player)
 			<li class="player">

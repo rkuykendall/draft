@@ -20,37 +20,37 @@
 
 // Home
 Route::get('/', "HomeController@getWelcome");
-Route::post('login', "HomeController@postLogin");
-Route::post('logout', "HomeController@postLogout");
-Route::get('register', "HomeController@getRegister");
-Route::post('register', "HomeController@postRegister");
+Route::post('login', array('before' => 'csrf', 'uses' => "HomeController@postLogin"));
+Route::post('logout', array('before' => 'csrf', 'uses' => "HomeController@postLogout"));
+Route::get('register', array('before' => 'guest|register', 'uses' => "HomeController@getRegister"));
+Route::post('register', array('before' => 'csrf|guest|register', 'uses' => "HomeController@postRegister"));
 
 // League
 Route::get('league/list', 'LeagueController@getList');
-Route::get('league/create', 'LeagueController@getCreate');
-Route::post('league/create', 'LeagueController@postCreate');
-Route::get('league/{id}-{slug?}', 'LeagueController@getView');
-Route::get('league/{id}', 'LeagueController@getView');
-Route::get('league/{id}-{slug?}/players', 'LeagueController@getViewPlayers');
-Route::get('league/{id}/players', 'LeagueController@getViewPlayers');
-Route::get('league/{id}-{slug?}/movies', 'LeagueController@getViewMovies');
-Route::get('league/{id}/movies', 'LeagueController@getViewMovies');
-Route::get('league/{id}/chart', 'LeagueController@getChartData');
+Route::get('league/create', array('before' => 'auth', 'uses' => 'LeagueController@getCreate'));
+Route::post('league/create', array('before' => 'csrf|auth', 'uses' => 'LeagueController@postCreate'));
 
-Route::get('league/{id}-{slug?}/admin/settings', 'LeagueController@getAdminSettings');
-Route::get('league/{id}/admin/settings', 'LeagueController@getAdminSettings');
-Route::post('league/{id}-{slug?}/admin/settings', 'LeagueController@postAdminSettings');
-Route::post('league/{id}/admin/settings', 'LeagueController@postAdminSettings');
-Route::get('league/{id}-{slug?}/admin/users', 'LeagueController@getAdminUsers');
-Route::get('league/{id}/admin/users', 'LeagueController@getAdminUsers');
-Route::post('league/{id}-{slug?}/admin/users', 'LeagueController@postAdminUsers');
-Route::post('league/{id}/admin/users', 'LeagueController@postAdminUsers');
-Route::get('league/{id}-{slug?}/admin/users/lookup/{query}', 'LeagueController@userLookup');
-Route::get('league/{id}/admin/users/lookup/{query}', 'LeagueController@userLookup');
-Route::get('league/{id}-{slug?}/admin/movies', 'LeagueController@getAdminMovies');
-Route::get('league/{id}/admin/movies', 'LeagueController@getAdminMovies');
-Route::post('league/{id}-{slug?}/admin/movies', 'LeagueController@postAdminMovies');
-Route::post('league/{id}/admin/movies', 'LeagueController@postAdminMovies');
+// One League
+Route::get('league/{league_slug}', 'LeagueController@getView');
+Route::get('league/{league_slug}/players', 'LeagueController@getViewPlayers');
+Route::get('league/{league_slug}/movies', 'LeagueController@getViewMovies');
 
+Route::get('league/{league_id}/chart', 'LeagueController@getChartData');
+
+// League Admin
+Route::group(array('before' => 'auth|league.admin|league.active'), function() {
+
+	Route::get('league/{league_slug}/admin/settings', 'LeagueAdminController@getAdminSettings');
+	Route::post('league/{league_slug}/admin/settings', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postAdminSettings'));
+
+	Route::get('league/{league_slug}/admin/users', 'LeagueAdminController@getAdminUsers');
+	Route::post('league/{league_slug}/admin/users', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postAdminUsers'));
+
+	Route::get('league/{league_id}/admin/users/lookup/{query?}', 'LeagueAdminController@userLookup');
+
+	Route::get('league/{league_slug}/admin/movies', 'LeagueAdminController@getAdminMovies');
+	Route::post('league/{league_slug}/admin/movies', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postAdminMovies'));
+	
+});
 // User
 Route::get("user/{username}", "UserController@getView");

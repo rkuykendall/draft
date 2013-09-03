@@ -13,7 +13,7 @@
 		@if($league->featured)
 			<i class="icon-star-empty icon-3x pull-right" title="Featured by Box Office Draft admins"></i>
 		@endif
-		<h3><a href="{{ action("LeagueController@getView", array("id" => $league->id, "slug" => $league->slug)) }}">
+		<h3><a href="{{ action("LeagueController@getView", array("league_slug" => $league->slug)) }}">
 			{{{ $league->name }}}
 		</a></h3>
 		{{ nl2br(e($league->description)) }}

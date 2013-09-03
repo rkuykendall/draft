@@ -19,7 +19,6 @@ App::before(function($request) {
 		}
 		return Redirect::to("register");
 	}
-
 });
 
 
@@ -87,3 +86,32 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+/* Register session check */
+Route::filter('register', function() {
+	if(!Session::has("register_email")) {
+		Notification::error("Session expired, we might get a fresh one by the browser...");
+		return Redirect::to("/");
+	}
+});
+
+
+/* League filters */
+Route::filter('league.admin', function($route) {
+	$league = $route->getParameter('league_slug') ?: $route->getParameter('league_id');
+
+	if(!$league->userIsAdmin(Auth::user())) {
+		App::abort(404);
+	}
+});
+
+Route::filter('league.active', function($route) {
+	$league = $route->getParameter('league_slug') ?: $route->getParameter('league_id');
+
+	if(!$league->active) {
+		Notification::error("League is now archived.");
+		return Redirect::action("LeagueController@getView", array('league_slug' => $league->slug));
+	}
+});
+
+

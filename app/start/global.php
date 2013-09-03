@@ -101,7 +101,6 @@ App::error(function(ModelNotFoundException $e) {
 	return Response::make($layout, 404);
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | Layout defaults
@@ -140,4 +139,25 @@ View::composer('layout.main', function($view) {
 		return MovieEarning::asDateTime(MovieEarning::max("updated_at") ?: '1970-01-01');
 	});
 
+});
+
+/* Route model bindings */
+Route::model('league_id', 'League');
+Route::bind('league_slug', function($value) {
+	// Find by slug
+	$league = League::where('slug', $value)->first();
+	if($league) return $league;
+
+	// Find by ID or ID-slug (v1)
+	if(preg_match('/^(\d*)[\w\d-]*$/', $value, $matches)) {
+		$league = League::find($matches[1]);
+		if($league) return $league;
+	}
+
+	throw new ModelNotFoundException;
+});
+
+Route::bind('username', function($value) {
+	$user = User::where('username', $value)->first();
+	if($user) return $user;
 });

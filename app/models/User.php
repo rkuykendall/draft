@@ -13,10 +13,10 @@ class User extends Eloquent implements UserInterface {
 	}
 	public function movies() {
 		// If called via league->user>movies only get movies related to the league
-		if(!$this->pivot or $this->pivot->getTable() != "league_user") {
-			return $this->belongsToMany('Movie', 'league_movie_user');
+		if($this->pivot and $this->pivot->getTable() == "league_user") {
+			return $this->belongsToMany('Movie', 'league_movie_user')->withPivot('league_id')->where('league_id', $this->pivot->league_id)->orderBy('release', 'asc');
 		}
-		return $this->belongsToMany('Movie', 'league_movie_user')->withPivot('league_id')->where('league_id', $this->pivot->league_id)->orderBy('release', 'asc');
+		return $this->belongsToMany('Movie', 'league_movie_user');
 	}
 
 

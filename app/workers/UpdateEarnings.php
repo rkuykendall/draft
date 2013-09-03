@@ -36,13 +36,19 @@ class UpdateEarnings {
 		if(!$movie->latestEarnings or $earnings->date > $movie->latestEarnings->date) {
 			$movie->latest_earnings_id = $earnings->id;
 			$movie->save();
+			// Update latest earnings id for active leagues too
+			DB::table('league_movie')
+			  ->join('leagues', 'league_movie.league_id', '=', 'leagues.id')
+			  ->where('league_movie.movie_id', $movie->id)
+			  ->where('leagues.end_date', '>=', new DateTime())
+			  ->update(array('league_movie.latest_earnings_id' => $movie->latest_earnings_id));
 		}
 
 		// Queue up league user updates
 		// Update only leagues that are active
 		$users = $movie->users()
 		               ->join('leagues', 'league_movie_user.league_id', '=', 'leagues.id')
-		               ->where('leagues.end_date', '>', new DateTime()) // Inner join filters out all non-valid movies
+		               ->where('leagues.end_date', '>=', new DateTime()) // Inner join filters out all non-valid movies
 		               ->get();
 
 		foreach ($users as $user) {

@@ -3,19 +3,6 @@
 class HomeController extends BaseController {
 	public $layout = "layout.main";
 
-	public function __construct() {
-		$this->beforeFilter("csrf", array("on" => "post"));
-
-		$this->beforeFilter("guest", array("only" => array("getRegister", "postRegister")));
-
-		$this->beforeFilter(function($route, $request) {
-			if(!Session::has("register_email")) {
-				Notification::error("Session expired, we might get a fresh one by the browser...");
-				return Redirect::to("/");
-			}
-		}, array("only" => array("getRegister", "postRegister")));
-	}
-
 	/* ROUTES */
 
 	// Home

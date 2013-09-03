@@ -13,7 +13,7 @@ class League extends Eloquent {
 	}
 
 	public function movies() {
-		return $this->belongsToMany('Movie')->withPivot('price')->orderBy('release', 'asc')->orderBy('id', 'desc')->withTimestamps();
+		return $this->belongsToMany('Movie')->withPivot('price', 'latest_earnings_id')->orderBy('release', 'asc')->orderBy('id', 'desc')->withTimestamps();
 	}
 
 	public function players() {
