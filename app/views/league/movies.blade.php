@@ -2,7 +2,7 @@
 
 @section("content")
 <h2>Movies</h2>
-@if(count($league->players) > 0)
+@if(count($league->movies) > 0)
 	<table class="table">
 		<thead>
 			<th>Name</th>
