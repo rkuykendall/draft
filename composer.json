@@ -3,7 +3,7 @@
 		"laravel/framework": "4.0.*",
 		"loic-sharma/profiler": "1.0.*",
 		"guzzle/guzzle": "~3.1.1",
-		"anahkiasen/former": "dev-agnostic",
+		"anahkiasen/former": "dev-master",
 		"edvinaskrucas/notification": "1.*",
 		"pda/pheanstalk": "2.1.*",
 		"barryvdh/laravel-ide-helper": "dev-master"
