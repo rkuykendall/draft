@@ -40,7 +40,7 @@ class UpdateEarnings {
 			DB::table('league_movie')
 			  ->join('leagues', 'league_movie.league_id', '=', 'leagues.id')
 			  ->where('league_movie.movie_id', $movie->id)
-			  ->where('leagues.end_date', '>=', new DateTime())
+			  ->where('leagues.end_date', '>=', new Carbon('today'))
 			  ->update(array('league_movie.latest_earnings_id' => $movie->latest_earnings_id));
 		}
 
@@ -48,7 +48,7 @@ class UpdateEarnings {
 		// Update only leagues that are active
 		$users = $movie->users()
 		               ->join('leagues', 'league_movie_user.league_id', '=', 'leagues.id')
-		               ->where('leagues.end_date', '>=', new DateTime()) // Inner join filters out all non-valid movies
+		               ->where('leagues.end_date', '>=', new Carbon('today')) // Inner join filters out all non-valid movies
 		               ->get();
 
 		foreach ($users as $user) {

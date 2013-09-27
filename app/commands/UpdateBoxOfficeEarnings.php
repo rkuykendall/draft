@@ -50,7 +50,7 @@ class UpdateBoxOfficeEarnings extends Command {
 		$movies = DB::table('movies')->where('movies.release', '<', new DateTime())
 		            ->join('league_movie', 'movies.id', '=', 'league_movie.movie_id')
 		            ->join('leagues', 'league_movie.league_id', '=', 'leagues.id')
-		            ->where('leagues.end_date', '>=', new DateTime()) // Inner join filters out all non-valid movies
+		            ->where('leagues.end_date', '>=', new Carbon('today')) // Inner join filters out all non-valid movies
 		            ->groupBy('movies.id')
 		            ->get(array('movies.id', DB::raw('COUNT(leagues.id) as UsedCount')));
 

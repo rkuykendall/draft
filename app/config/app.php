@@ -186,7 +186,6 @@ return array(
 		'Carbon'          => 'Carbon\Carbon',
 		'Former'          => 'Former\Facades\Former',
 		'Notification'    => 'Krucas\Notification\Facades\Notification',
-		'Profiler'        => 'Profiler\Facades\Profiler',
 
 	),
 
