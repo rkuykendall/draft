@@ -161,3 +161,4 @@ Route::bind('username', function($value) {
 	$user = User::where('username', $value)->first();
 	if($user) return $user;
 });
+Route::model('movie', 'Movie');

@@ -40,17 +40,23 @@ Route::get('league/{league_id}/chart', 'LeagueController@getChartData');
 // League Admin
 Route::group(array('before' => 'auth|league.admin|league.active'), function() {
 
-	Route::get('league/{league_slug}/admin/settings', 'LeagueAdminController@getAdminSettings');
-	Route::post('league/{league_slug}/admin/settings', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postAdminSettings'));
+	Route::get('league/{league_slug}/admin/settings', 'LeagueAdminController@getSettings');
+	Route::post('league/{league_slug}/admin/settings', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postSettings'));
 
-	Route::get('league/{league_slug}/admin/users', 'LeagueAdminController@getAdminUsers');
-	Route::post('league/{league_slug}/admin/users', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postAdminUsers'));
+	Route::get('league/{league_slug}/admin/users', 'LeagueAdminController@getUsers');
+	Route::post('league/{league_slug}/admin/users', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postUsers'));
 
 	Route::get('league/{league_id}/admin/users/lookup/{query?}', 'LeagueAdminController@userLookup');
 
-	Route::get('league/{league_slug}/admin/movies', 'LeagueAdminController@getAdminMovies');
-	Route::post('league/{league_slug}/admin/movies', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postAdminMovies'));
+	Route::get('league/{league_slug}/admin/movies', 'LeagueAdminController@getMovies');
+	Route::post('league/{league_slug}/admin/movies', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postMovies'));
 	
+	Route::get('league/{league_slug}/admin/movies/add', 'LeagueAdminController@getAddMovies');
+	Route::post('league/{league_slug}/admin/movies/add', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postAddMovies'));
+	
+	Route::get('league/{league_slug}/admin/movies/replace/{movie}', 'LeagueAdminController@getMoviesReplace');
+	Route::post('league/{league_slug}/admin/movies/replace/{movie}', array('before' => 'csrf', 'uses' => 'LeagueAdminController@postMoviesReplace'));
+
 });
 // User
 Route::get("user/{username}", "UserController@getView");

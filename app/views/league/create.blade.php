@@ -13,5 +13,6 @@
 	<p>Note: During alpha you can only copy rules of the NSFWshow Movie Draft..... Well and modify these settings:</p>
 	{{ Former::text("money")->value(Config::get("draft.league_defaults.money")) }}
 	{{ Former::text("units")->value(Config::get("draft.league_defaults.units")) }}
+	{{ Former::select("extra_weeks")->options(array_combine(range(1, 12), range(1, 12)), Config::get("draft.league_defaults.extra_weeks"))->label('Extra weeks for earnings')->blockHelp('The amount of weeks a league is going after the last movie has been released.') }}
 	{{ Former::actions()->primary_submit('Submit')->reset('Reset') }}
 {{ Former::close() }}

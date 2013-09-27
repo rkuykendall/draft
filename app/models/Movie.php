@@ -37,4 +37,7 @@ class Movie extends Eloquent {
 		$this->setRelation("latestEarnings", $lmovie->getRelation('latestEarnings'));
 	}
 
+	public function getReleasedAttribute($value = '') {
+		return !$this->release->isFuture();
+	}
 }

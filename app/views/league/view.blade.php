@@ -48,20 +48,24 @@ echo '<p>'.implode(', ', $usernames->toArray()).'</p>';
 		<p><span class="muted">End date:</span> {{{ $league->end_date->toFormattedDateString() }}}</p>
 		<p><span class="muted">Buying money:</span> {{{ $league->units.' '.$league->money }}}</p>
 		<h3>Movies</h3>
-		<ul>
-			<?php $now = new DateTime('now'); $printedUpcoming = false; ?>
-			@foreach($league->movies as $movie)
-				<?php
-					if($now < $movie->release && !$printedUpcoming) {
-						echo '</ul><div class="upcomingSeparator"><div></div><span>Upcoming</span></div><ul>';
-						$printedUpcoming = true;
-					}
-				?>
-				<li>
-					{{{ $movie->name }}} <small class="muted">({{{ $now >= $movie->release ? '$'.number_format($movie->latestEarnings->domestic) : $movie->release->toFormattedDateString() }}})</small>
-				</li>
-			@endforeach
-		</ul>
+		@if(count($league->movies))
+			<ul>
+				<?php $now = new DateTime('now'); $printedUpcoming = false; ?>
+				@foreach($league->movies as $movie)
+					<?php
+						if($now < $movie->release && !$printedUpcoming) {
+							echo '</ul><div class="upcomingSeparator"><div></div><span>Upcoming</span></div><ul>';
+							$printedUpcoming = true;
+						}
+					?>
+					<li>
+						{{{ $movie->name }}} <small class="muted">({{{ $now >= $movie->release ? '$'.number_format($movie->latestEarnings->domestic) : $movie->release->toFormattedDateString() }}})</small>
+					</li>
+				@endforeach
+			</ul>
+		@else
+			<p>This league currently uses no movies</p>
+		@endif
 	</div>
 </div>
 @stop

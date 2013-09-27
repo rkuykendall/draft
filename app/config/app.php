@@ -116,8 +116,8 @@ return array(
 
 		'Former\FormerServiceProvider',
 		'Krucas\Notification\NotificationServiceProvider',
-		'Profiler\ProfilerServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+		'Barryvdh\Debugbar\ServiceProvider',
 	),
 
 	/*
@@ -184,7 +184,7 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 
 		'Carbon'          => 'Carbon\Carbon',
-		'Former'          => 'Former\Facades\Illuminate',
+		'Former'          => 'Former\Facades\Former',
 		'Notification'    => 'Krucas\Notification\Facades\Notification',
 		'Profiler'        => 'Profiler\Facades\Profiler',
 

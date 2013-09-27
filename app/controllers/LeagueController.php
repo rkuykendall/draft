@@ -16,12 +16,13 @@ class LeagueController extends BaseController {
 
 	/* Create League */
 	public $league_create_valid_rules = array(
-		"name" => "required|max:255",
+		"name"        => "required|max:255",
 		"description" => "required",
-		"url" => "url",
+		"url"         => "url",
 
-		"money" => "required|integer",
-		"units" => "required|max:16",
+		"money"       => "required|integer",
+		"units"       => "required|max:16",
+		'extra_weeks' => 'required|integer|between:1,12'
 	);
 
 	public function getCreate() {
@@ -46,18 +47,31 @@ class LeagueController extends BaseController {
 		$league->mode        = Config::get("draft.league_defaults.mode");
 		$league->money       = Input::get("money");
 		$league->units       = Input::get("units");
-		$league->end_date    = "2013-09-20";
+		$league->extra_weeks = Input::get("extra_weeks");
+		$league->start_date  = $league->end_date = Carbon::now()->addMonths(6);
 		if($league->save()) {
 			// Add user as admin
 			$league->users()->attach(Auth::user(), array("player" => 0, "admin" => 1));
-			// Add movies
+			// Add movies according to set
 			//ALPHA: Default set
+			/*
 			$predefined = Movie::whereIn('id', Config::get("draft.league_defaults.movies"))->get();
 			$syncable = array();
 			foreach ($predefined as $movie) {
 				$syncable[$movie->id] = array('latest_earnings_id' => $movie->latest_earnings_id, 'price' => 0);
 			}
 			$league->movies()->sync($syncable);
+			*/
+			// In case the extra week's wasn't predicted to be suitable for the set
+			$max_extra = $league->maxExtraWeeks();
+			if($league->extra_weeks > $max_extra) {
+				$league->extra_weeks = $max_extra;
+				// Saving done in league date updating anyway.
+			}
+
+			// Recalculate start & end date
+			$league->updateLeagueDates();
+
 			Notification::success("Good Luck Have Batman");
 			return Redirect::action("LeagueController@getView", array("league_slug" => $league->slug));
 		} else {

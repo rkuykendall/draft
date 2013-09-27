@@ -1,7 +1,7 @@
 {
 	"require": {
 		"laravel/framework": "4.0.*",
-		"loic-sharma/profiler": "1.0.*",
+		"barryvdh/laravel-debugbar": "dev-master",
 		"guzzle/guzzle": "~3.1.1",
 		"anahkiasen/former": "dev-master",
 		"edvinaskrucas/notification": "1.*",
@@ -21,14 +21,16 @@
 	},
 	"scripts": {
 		"post-install-cmd": [
-			"php artisan ide-helper:generate",
+			"php artisan ide-helper:generate -M",
+			"php artisan debugbar:publish",
 			"php artisan optimize"
 		],
 		"pre-update-cmd": [
 			"php artisan clear-compiled"
 		],
 		"post-update-cmd": [
-			"php artisan ide-helper:generate",
+			"php artisan ide-helper:generate -M",
+			"php artisan debugbar:publish",
 			"php artisan optimize"
 		],
 		"post-create-project-cmd": [

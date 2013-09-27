@@ -3,7 +3,7 @@
 class League extends Eloquent {
 
 	public function getDates() {
-		return array_merge(parent::getDates(), array("end_date"));
+		return array_merge(parent::getDates(), array("start_date", "end_date"));
 	}
 
 	/* Relationships */
@@ -13,7 +13,7 @@ class League extends Eloquent {
 	}
 
 	public function movies() {
-		return $this->belongsToMany('Movie')->withPivot('price', 'latest_earnings_id')->orderBy('release', 'asc')->orderBy('id', 'desc')->withTimestamps();
+		return $this->belongsToMany('Movie')->withPivot('price', 'latest_earnings_id')->orderBy('release', 'asc')->orderBy('movies.id', 'desc')->withTimestamps();
 	}
 
 	public function players() {
@@ -48,9 +48,6 @@ class League extends Eloquent {
 				}
 				$i++;
 			}
-
-
-			$slug = $slug;
 			$this->slug = $slug;
 		}
 		$this->attributes["name"] = $value;
@@ -61,8 +58,46 @@ class League extends Eloquent {
 		return $this->end_date->isFuture();
 	}
 
+	// Update start & end dates
+	public function updateLeagueDates() {
+		$movies = $this->movies()->get(); // Don't use cached data
+		if(count($movies)) {
+			$earliest = $movies->first();
+			$latest = $movies->last();
+			$this->start_date = $earliest->release;
+			$maxdate = $this->start_date->copy()->addMonths(Config::get('draft.max_months'));
+			$this->end_date = $latest->release->copy()->addWeeks($this->extra_weeks);
+			if($this->end_date > $maxdate) {
+				$this->end_date = $maxdate;
+			}
+		} else {
+			$this->start_date  = $this->end_date = Carbon::now()->addMonths(Config::get('draft.max_months'));
+		}
+		$this->save();
+	}
+
+	public function maxLastMovieDate() {
+		return $this->start_date->copy()->addMonths(Config::get('draft.max_months'))->subWeeks($this->extra_weeks);
+	}
+
+	// Maximum extra weeks (6 mtnhs - (latest - earliest))
+	public function maxExtraWeeks() {
+		$movies = $this->movies()->get();
+
+		if(count($movies)) {
+			$first = $movies->first();
+			$last = $movies->last();
+			$hardlimit = $first->release->addMonths(Config::get('draft.max_months'));
+			$maxweeks = floor($hardlimit->diffInDays($last->release) / 7);
+		} else {
+			$maxweeks = 12;
+		}
+		$maxweeks = min($maxweeks, 12);
+		return $maxweeks;
+	}
+
 	/* Query Scope */
 	public function scopeActive($query) {
-		return $query->where('end_date', '>', Carbon::now());
+		return $query->where('end_date', '>=', new Carbon('today'));
 	}
 }

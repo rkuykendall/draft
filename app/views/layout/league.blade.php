@@ -9,9 +9,9 @@
 		<li class="dropdown pull-right{{ starts_with(Route::currentRouteAction(), 'LeagueAdminController') ? ' active' : null }}">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <b class="caret"></b></a>
 			<ul class="dropdown-menu">
-				<li{{ Route::currentRouteAction() == "LeagueAdminController@getAdminSettings" ? ' class="active"' : null }}><a href="{{ action("LeagueAdminController@getAdminSettings", array("league_slug" => $league->slug)) }}">Settings</a></li>
-				<li{{ Route::currentRouteAction() == "LeagueAdminController@getAdminUsers" ? ' class="active"' : null }}><a href="{{ action("LeagueAdminController@getAdminUsers", array("league_slug" => $league->slug)) }}">Users</a></li>
-				<li{{ Route::currentRouteAction() == "LeagueAdminController@getAdminMovies" ? ' class="active"' : null }}><a href="{{ action("LeagueAdminController@getAdminMovies", array("league_slug" => $league->slug)) }}">Movies</a></li>
+				<li{{ Route::currentRouteAction() == "LeagueAdminController@getSettings" ? ' class="active"' : null }}><a href="{{ action("LeagueAdminController@getSettings", array("league_slug" => $league->slug)) }}">Settings</a></li>
+				<li{{ Route::currentRouteAction() == "LeagueAdminController@getUsers" ? ' class="active"' : null }}><a href="{{ action("LeagueAdminController@getUsers", array("league_slug" => $league->slug)) }}">Users</a></li>
+				<li{{ Route::currentRouteAction() == "LeagueAdminController@getMovies" ? ' class="active"' : null }}><a href="{{ action("LeagueAdminController@getMovies", array("league_slug" => $league->slug)) }}">Movies</a></li>
 			</ul>
 		</li>
 	@endif

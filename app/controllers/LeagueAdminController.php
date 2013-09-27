@@ -11,22 +11,24 @@ class LeagueAdminController extends BaseController {
 
 		"money" => "required|integer",
 		"units" => "required|max:16",
+		"extra_weeks" => "required|integer|between:1,12",
 	);
 
-	public function getAdminSettings(League $league) {
+	public function getSettings(League $league) {
+		$max_weeks = $league->maxExtraWeeks();		
 
 		$this->layout->title = "Settings | Admin | ".$league->name;
 		$this->layout->content = View::make("league.admin.settings", array(
-			'league' => $league, "edit_rules" => $this->league_edit_valid_rules
+			'league' => $league, "edit_rules" => $this->league_edit_valid_rules, 'max_weeks' => $max_weeks
 		));
 
 	}
 
-	public function postAdminSettings(League $league) {
+	public function postSettings(League $league) {
 		$validator = Validator::make(Input::all(), $this->league_edit_valid_rules);
 		if($validator->fails()) {
 			Notification::error("Duder something is wrong with your input.");
-			return Redirect::action("LeagueAdminController@getAdminSettings", array("league_slug" => $league->slug))->withInput()->withErrors($validator);
+			return Redirect::action("LeagueAdminController@getSettings", array("league_slug" => $league->slug))->withInput()->withErrors($validator);
 		}
 
 		// Overwrites
@@ -37,17 +39,21 @@ class LeagueAdminController extends BaseController {
 
 		$league->money       = Input::get("money");
 		$league->units       = Input::get("units");
+		$league->extra_weeks = Input::get("extra_weeks");
 		if($league->save()) {
+			// in case of extra_weeks update
+			$league->updateLeagueDates();
+
 			Notification::success("Changes saved!");
-			return Redirect::action("LeagueAdminController@getAdminSettings", array("league_slug" => $league->slug));
+			return Redirect::action("LeagueAdminController@getSettings", array("league_slug" => $league->slug));
 		} else {
 			Notification::error("Database error, try again later?");
-			return Redirect::action("LeagueAdminController@getAdminSettings", array("league_slug" => $league->slug))->withInput();
+			return Redirect::action("LeagueAdminController@getSettings", array("league_slug" => $league->slug))->withInput();
 		}
 	}
 
 	// Users
-	public function getAdminUsers(League $league) {
+	public function getUsers(League $league) {
 
 		$this->layout->title = "Users | Admin | ".$league->name;
 		$this->layout->content = View::make("league.admin.users", array(
@@ -56,12 +62,12 @@ class LeagueAdminController extends BaseController {
 
 	}
 
-	public function postAdminUsers(League $league) {
+	public function postUsers(League $league) {
 		// Get the user
 		$user = User::whereUsername(Input::get("username"))->first();
 		if(!$user) {
 			Notification::error("User not found");
-			return Redirect::action("LeagueAdminController@getAdminUsers", array("league_slug" => $league->slug))->withInput();
+			return Redirect::action("LeagueAdminController@getUsers", array("league_slug" => $league->slug))->withInput();
 		}
 
 		try {
@@ -90,7 +96,7 @@ class LeagueAdminController extends BaseController {
 				Notification::error($e->getMessage());
 			}
 		}
-		return Redirect::action("LeagueAdminController@getAdminUsers", array("league_slug" => $league->slug));
+		return Redirect::action("LeagueAdminController@getUsers", array("league_slug" => $league->slug));
 	}
 	// Actual handlers
 	public function addPlayer(League $league, User $user) {
@@ -181,11 +187,13 @@ class LeagueAdminController extends BaseController {
 
 
 	// Movies
-	public function getAdminMovies(League $league) {
-		$league->load(
+	public function getMovies(League $league) {
+		$league->load(array(
 			'movies',
-			'movies.users'
-		);
+			'movies.users' => function($query) use($league) {
+				$query->where('league_id', $league->id);
+			}
+		));
 		// Preformatted for your satisfaction
 		$players = array_merge(array(array("id" => 0, "username" => "- Nobody -")), $league->players->map(function($player) {
 			return array("id" => $player->id, "username" => $player->username);
@@ -196,16 +204,34 @@ class LeagueAdminController extends BaseController {
 			"league" => $league, "players" => $players,
 		));
 	}
-	public function postAdminMovies(League $league) {
-		$league->load(
+	public function postMovies(League $league) {
+		$league->load(array(
 			'movies',
-			'movies.users'
-		);
+			'movies.users' => function($query) use($league) {
+				$query->where('league_id', $league->id);
+			}
+		));
 		$input = Input::get("movies");
 
 		$errors = array();
 		$changes = 0;
 		$update_players = array(0);
+
+		if(Input::has('remove') && filter_var(Input::get('remove'), FILTER_VALIDATE_INT) !== false && $movie = $league->movies->find(Input::get('remove'))) {
+			// Remove any possible attached players
+			foreach ($movie->users as $user) {
+				$query = DB::table('league_movie_user')->whereLeagueId($league->id)->whereMovieId($movie->id)->whereUserId($user->id);
+				$query->delete();
+				if(array_search($user->id, $update_players) === false) {
+					$update_players[] = $user->id;
+				}
+			}
+			// Remove movie
+			$league->movies()->detach($movie->id);
+			// Instead of adding it to changes count, have a seperate notification
+			Notification::success('Movie '.e($movie->name).' has been removed from the league.');
+
+		}
 
 		foreach ($league->movies as $movie) {
 			// Bought for = $movie->pivot->price
@@ -250,7 +276,15 @@ class LeagueAdminController extends BaseController {
 				$errors[] = 'Movie '.e($movie->name).' was bought by an UFO.';
 			}
 		}
-		Notification::success("{$changes} changes saved!");
+		// Notifications
+		if($changes > 0) {
+			Notification::success("{$changes} changes saved!");
+		}
+		if(count($errors) > 0) {
+			Notification::warning("The following errors occured, and were not processed:<ul><li>".implode("</li><li>", $errors)."</li></ul>");
+		}
+
+		// Update related players
 		foreach ($update_players as $user_id) {
 			if($user_id != 0) {
 				Queue::push("UpdateUserEarnings", array(
@@ -258,11 +292,79 @@ class LeagueAdminController extends BaseController {
 				));
 			}
 		}
-		if(count($errors) > 0) {
-			Notification::warning("The following errors occured, and were not processed:<ul><li>".implode("</li><li>", $errors)."</li></ul>");
-		}
 
-		return Redirect::action("LeagueAdminController@getAdminMovies", array("league_slug" => $league->slug));
+		return Redirect::action("LeagueAdminController@getMovies", array("league_slug" => $league->slug));
 	}
 
+	/**
+	 * Adding Movies
+	 */
+	public function getAddMovies(League $league) {
+		$date_range = array(Carbon::now(), $league->maxLastMovieDate());
+		$query = Movie::whereBetween('release', $date_range);
+		if(count($league->movies)) {
+			$query->whereNotIn('id', $league->movies->modelKeys());
+		}
+		$movies = $query->get();
+
+		$this->layout->title   = "Add Movies | Admin | ".$league->name;
+		$this->layout->content = View::make('league.admin.addmovies', compact('league', 'movies', 'date_range'));
+	}
+	public function postAddMovies(League $league) {
+		if(count(Input::get('movies')) == 0) {
+			Notification::error('Please choose movies to add.');
+			return Redirect::back();
+		}
+
+		$date_range = array(Carbon::now(), $league->maxLastMovieDate());
+
+		$moviesQuery = Movie::whereBetween('release', $date_range)->whereIn('id', Input::get('movies'));
+		if(count($league->movies)) {
+			$moviesQuery->whereNotIn('id', $league->movies->modelKeys());
+		}
+		$movies = $moviesQuery->get();
+
+		foreach ($movies as $movie) {
+			$league->movies()->attach($movie, array('latest_earnings_id' => $movie->latest_earnings_id, 'price' => 0));
+		}
+		$league->updateLeagueDates();
+
+		Notification::success(count($movies).' movie(s) have been added!');
+		return Redirect::action('LeagueAdminController@getAddMovies', array('league_slug' => $league->slug));
+	}
+
+	/**
+	 * Replace movie
+	 */
+	public function getMoviesReplace(League $league, Movie $oldmovie) {
+		if($league->movies()->where('movie_id', $oldmovie->id)->count() == 0) {
+			Notification::error("This movie isn't in the league.");
+			return Redirect::action('LeagueAdminController@getMovies', array('league_slug' => $league->slug));
+		}
+		$date_range = array(Carbon::now(), $league->maxLastMovieDate());
+		$movies = Movie::whereBetween('release', $date_range)->whereNotIn('id', $league->movies->modelKeys())->get();
+		
+		$this->layout->title   = "Replace Movie | Admin | ".$league->name;
+		$this->layout->content = View::make('league.admin.replacemovie', compact('league', 'oldmovie', 'movies', 'date_range'));
+	}
+	public function postMoviesReplace(League $league, Movie $oldmovie) {
+		if($league->movies()->where('movie_id', $oldmovie->id)->count() == 0) {
+			Notification::error("This movie isn't in the league.");
+			return Redirect::action('LeagueAdminController@getMovies', array('league_slug' => $league->slug));
+		}
+		$date_range = array(Carbon::now(), $league->maxLastMovieDate());
+
+		$new_movie = Movie::whereBetween('release', $date_range)->where('id', Input::get('movie'))->first();
+		if(!$new_movie) {
+			Notification::error("Couldn't find the replacement movie.");
+			return Redirect::action('LeagueAdminController@getMoviesReplace', array('league_slug' => $league->slug, 'movie' => $oldmovie->id));
+		}
+
+		DB::table('league_movie')->where('league_id', $league->id)->where('movie_id', $oldmovie->id)->update(array('movie_id' => $new_movie->id));
+		DB::table('league_movie_user')->where('league_id', $league->id)->where('movie_id', $oldmovie->id)->update(array('movie_id' => $new_movie->id));
+		$league->updateLeagueDates();
+
+		Notification::success(e($oldmovie->name).' has been replaced with '.e($new_movie->name));
+		return Redirect::action('LeagueAdminController@getMovies', array('league_slug' => $league->slug));
+	}
 }
