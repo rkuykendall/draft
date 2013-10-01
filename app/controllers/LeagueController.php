@@ -54,14 +54,14 @@ class LeagueController extends BaseController {
 			$league->users()->attach(Auth::user(), array("player" => 0, "admin" => 1));
 			// Add movies according to set
 			//ALPHA: Default set
-			/*
+			
 			$predefined = Movie::whereIn('id', Config::get("draft.league_defaults.movies"))->get();
 			$syncable = array();
 			foreach ($predefined as $movie) {
 				$syncable[$movie->id] = array('latest_earnings_id' => $movie->latest_earnings_id, 'price' => 0);
 			}
 			$league->movies()->sync($syncable);
-			*/
+			
 			// In case the extra week's wasn't predicted to be suitable for the set
 			$max_extra = $league->maxExtraWeeks();
 			if($league->extra_weeks > $max_extra) {
