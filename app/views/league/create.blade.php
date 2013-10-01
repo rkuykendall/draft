@@ -1,7 +1,6 @@
 <h1>Create league</h1>
-<div class="alert">
-	<h3>Warning!</h3>
-	<p>Leagues created right now will be created according to Summer Movie Draft 2013 ruleset. Winter movie draft ruleset has been not yet created.</p>
+<div class="alert alert-info">
+	<h3>Now featuring 2013 Winter Movie Draft!</h3>
 </div>
 {{ Former::horizontal_open(action("LeagueController@getCreate"))->rules($create_rules) }}
 	{{ Former::token() }}

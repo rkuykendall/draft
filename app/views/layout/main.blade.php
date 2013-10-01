@@ -66,7 +66,7 @@
 		<hr>
 
 		<footer>
-			<p>Box Office Draft 2013 - <i class="icon-heart-empty"></i> <a href="https://github.com/t2t2/draft" target="_blank">opensource</a> - Powered by unicorns and <a href="http://www.laravel.com/" target="_blank">Laravel 4</a></p>
+			<p>Box Office Draft 2013 - built by <a href="http://t2t2.eu" target="_blank">t2t2</a> - <i class="icon-heart-empty"></i> <a href="https://github.com/t2t2/draft" target="_blank">opensource</a> - Powered by unicorns and <a href="http://www.laravel.com/" target="_blank">Laravel 4</a></p>
 			<p>Latest Data Update: <span title="{{ $last_update->toCOOKIEString() }}">{{ $last_update->diffForHumans() }}</span></p>
 		</footer>
 

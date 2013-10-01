@@ -8,8 +8,11 @@
 		</ol>
 	</div>
 	<div class="span4">
-		<h2>DISCLAIMER DISCLAIMER DISCLAIMER</h2>
-		<p>This is alpha. Really alpha. Like it might break at any second. You've been warned.</p>
+		<div class="alert alert-info">
+			Now featuring 2013 Winter Movie Draft!
+		</div>
+		<h2>DISCLAIMER DISCLAIMER</h2>
+		<p>This is alpha version 2. That's slightly better than just alpha. It still might break but it seems to not do it (that often). But we have trained monkeys to handle that.</p>
 		<h2>Create your own league</h2>
 		@if(Auth::check())
 		<p>Gather up your friends and <a href="{{ action("LeagueController@getCreate") }}">create your own league</a>!</p>
