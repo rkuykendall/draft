@@ -301,7 +301,7 @@ class LeagueAdminController extends BaseController {
 	 */
 	public function getAddMovies(League $league) {
 		$date_range = array(Carbon::now(), $league->maxLastMovieDate());
-		$query = Movie::whereBetween('release', $date_range);
+		$query = Movie::whereBetween('release', $date_range)->orderBy('release', 'asc');
 		if(count($league->movies)) {
 			$query->whereNotIn('id', $league->movies->modelKeys());
 		}
@@ -342,7 +342,7 @@ class LeagueAdminController extends BaseController {
 			return Redirect::action('LeagueAdminController@getMovies', array('league_slug' => $league->slug));
 		}
 		$date_range = array(Carbon::now(), $league->maxLastMovieDate());
-		$movies = Movie::whereBetween('release', $date_range)->whereNotIn('id', $league->movies->modelKeys())->get();
+		$movies = Movie::whereBetween('release', $date_range)->orderBy('release', 'asc')->whereNotIn('id', $league->movies->modelKeys())->get();
 		
 		$this->layout->title   = "Replace Movie | Admin | ".$league->name;
 		$this->layout->content = View::make('league.admin.replacemovie', compact('league', 'oldmovie', 'movies', 'date_range'));
