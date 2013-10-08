@@ -29,11 +29,10 @@
 							<div class="btn-group">
 								@if(!$movie->released)
 									<a href="{{ action('LeagueAdminController@getMoviesReplace', array('league_slug' => $league->slug, 'movie' => $movie->id)) }}" class="btn btn-warning" title="Swap this movie"><i class="icon-exchange"></i></a>
-									{{ Form::button('<i class="icon-remove"></i>', array('class' => 'btn btn-danger', 'name' => 'remove', 'value' => $movie->id, 'type' => 'submit')) }}
 								@else
 									<div class="btn disabled btn-warning" title="Swapping movies after release is disabled"><i class="icon-exchange"></i></div>
-									<div class="btn disabled btn-danger" title="Removing movies after release is disabled"><i class="icon-remove"></i></div>
 								@endif
+								{{ Form::button('<i class="icon-remove"></i>', array('class' => 'btn btn-danger', 'name' => 'remove', 'value' => $movie->id, 'type' => 'submit')) }}
 							</div>
 
 						</td>
