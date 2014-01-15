@@ -17,7 +17,6 @@ ClassLoader::addDirectories(array(
 	app_path().'/controllers',
 	app_path().'/models',
 	app_path().'/database/seeds',
-	app_path().'/workers'
 
 ));
 
@@ -28,13 +27,11 @@ ClassLoader::addDirectories(array(
 |
 | Here we will configure the error logger setup for the application which
 | is built on top of the wonderful Monolog library. By default we will
-| build a rotating log file setup which creates a new file each day.
+| build a basic log file setup which creates a single file for logs.
 |
 */
 
-$logFile = 'log-'.php_sapi_name().'.txt';
-
-Log::useDailyFiles(storage_path().'/logs/'.$logFile);
+Log::useFiles(storage_path().'/logs/laravel.log');
 
 /*
 |--------------------------------------------------------------------------
@@ -61,13 +58,13 @@ App::error(function(Exception $exception, $code)
 |
 | The "down" Artisan command gives you the ability to put an application
 | into maintenance mode. Here, you will define what is displayed back
-| to the user if maintenace mode is in effect for this application.
+| to the user if maintenance mode is in effect for the application.
 |
 */
 
 App::down(function()
 {
-	return Response::make(View::make("errors.503"), 503);
+	return Response::make("Be right back!", 503);
 });
 
 /*
@@ -82,83 +79,3 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
-
-/*
-| 404 page
-*/
-
-App::missing(function($exception) {
-	$layout = View::make("layout.main");
-	$layout->content = View::make("errors.404");
-	return Response::make($layout, 404);
-});
-
-// See Model::findOrFail()
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-App::error(function(ModelNotFoundException $e) {
-	$layout = View::make("layout.main");
-	$layout->content = View::make("errors.404");
-	return Response::make($layout, 404);
-});
-
-/*
-|--------------------------------------------------------------------------
-| Layout defaults
-|--------------------------------------------------------------------------
-*/
-View::composer('layout.main', function($view) {
-	// Translate js settings into data attribs
-	if(!isset($view->javascript)) {
-		$view->javascript = array();
-	}
-	$jsdata = array(
-		'url' => url(),
-		'asset-url' => asset(''),
-		'csrf' => Session::getToken()
-	);
-	if(isset($view->javascript[0])) {
-		$jsdata['controller'] = $view->javascript[0];
-	}
-	if(isset($view->javascript[1])) {
-		$jsdata['action'] = $view->javascript[1];
-	}
-	if(Auth::check()) {
-		$jsdata['user'] = Auth::user()->email;
-	}
-	$view->jsdata = "";
-	foreach ($jsdata as $key => $value) {
-		$view->jsdata .= ' data-'.$key.'="'.e($value).'"';
-	}
-
-	// Empty content
-	if(!isset($view->content)) {
-		$view->content = "";
-	}
-
-	$view->last_update = Cache::rememberForever('last_update', function() {
-		return MovieEarning::asDateTime(MovieEarning::max("updated_at") ?: '1970-01-01');
-	});
-
-});
-
-/* Route model bindings */
-Route::model('league_id', 'League');
-Route::bind('league_slug', function($value) {
-	// Find by slug
-	$league = League::where('slug', $value)->first();
-	if($league) return $league;
-
-	// Find by ID or ID-slug (v1)
-	if(preg_match('/^(\d*)[\w\d-]*$/', $value, $matches)) {
-		$league = League::find($matches[1]);
-		if($league) return $league;
-	}
-
-	throw new ModelNotFoundException;
-});
-
-Route::bind('username', function($value) {
-	$user = User::where('username', $value)->first();
-	if($user) return $user;
-});
-Route::model('movie', 'Movie');

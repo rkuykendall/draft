@@ -11,5 +11,3 @@
 |
 */
 
-Artisan::add(new UpdateBoxOfficeEarnings);
-Artisan::add(new RecalculateLeagueUsersEarnings);

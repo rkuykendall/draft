@@ -27,7 +27,6 @@ class User extends Eloquent implements UserInterface {
 	}
 
 	/* UserInterface */
-
 	public function getAuthIdentifier() {
 		return $this->getKey();
 	}

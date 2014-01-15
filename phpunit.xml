@@ -10,9 +10,25 @@
          stopOnFailure="false"
          syntaxCheck="false"
 >
-    <testsuites>
-        <testsuite name="Application Test Suite">
-            <directory>./app/tests/</directory>
-        </testsuite>
-    </testsuites>
+	<testsuites>
+		<testsuite name="Application Test Suite">
+			<directory>./app/tests/</directory>
+		</testsuite>
+	</testsuites>
+
+	<filter>
+		<whitelist>
+			<directory suffix=".php">./app</directory>
+			<directory suffix=".php">./bootstrap</directory>
+			<exclude>
+				<!-- Autoloaded by phpunit -->
+				<file>./bootstrap/autoload.php</file>
+				<!-- Not tested -->
+				<directory suffix=".php">./app/config/local</directory>
+			</exclude>
+		</whitelist>
+		<blacklist>
+			<directory suffix=".php">./vendor</directory>
+		</blacklist>
+	</filter>
 </phpunit>

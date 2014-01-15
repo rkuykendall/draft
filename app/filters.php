@@ -11,14 +11,9 @@
 |
 */
 
-App::before(function($request) {
-	// Force back if in regstration mode.
-	if(Session::has("register_email") and !($request->is("logout") or $request->is("register"))) {
-		if(Auth::check()) { // False positive, aka forgot to delete the session
-			Session::forget("register_email");
-		}
-		return Redirect::to("register");
-	}
+App::before(function($request)
+{
+	//
 });
 
 
@@ -40,10 +35,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if(Auth::guest()) {
-		Notification::error("You must be logged in to use this feature!");
-		return Redirect::to('/');
-	}
+	if (Auth::guest()) return Redirect::guest('login');
 });
 
 
@@ -86,32 +78,3 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
-
-/* Register session check */
-Route::filter('register', function() {
-	if(!Session::has("register_email")) {
-		Notification::error("Session expired, we might get a fresh one by the browser...");
-		return Redirect::to("/");
-	}
-});
-
-
-/* League filters */
-Route::filter('league.admin', function($route) {
-	$league = $route->getParameter('league_slug') ?: $route->getParameter('league_id');
-
-	if(!$league->userIsAdmin(Auth::user())) {
-		App::abort(404);
-	}
-});
-
-Route::filter('league.active', function($route) {
-	$league = $route->getParameter('league_slug') ?: $route->getParameter('league_id');
-
-	if(!$league->active) {
-		Notification::error("League is now archived.");
-		return Redirect::action("LeagueController@getView", array('league_slug' => $league->slug));
-	}
-});
-
-

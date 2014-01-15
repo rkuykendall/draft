@@ -1,6 +1,7 @@
 /bootstrap/compiled.php
+/report
 /vendor
 composer.phar
 composer.lock
 .DS_Store
-_IDE_helper.php
+Thumbs.db
