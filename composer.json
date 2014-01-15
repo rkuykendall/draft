@@ -4,6 +4,7 @@
 		"php": ">=5.4",
 		"laravel/framework": "4.1.*"
 	},
+
 	"autoload": {
 		"classmap": [
 			"app/commands",
@@ -29,5 +30,8 @@
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "dev",
+	"require-dev": {
+		"doctrine/dbal": "2.4.x"
+	}
 }

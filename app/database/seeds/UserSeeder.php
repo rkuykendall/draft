@@ -3,10 +3,15 @@
 class UserSeeder extends Seeder {
 	public function run() {
 		$this->command->info("Adding users...");
-		DB::table("users")->delete();
 
-		$admin_user = $this->command->ask("Please enter the username for the admin user: ");
-		$admin_email = $this->command->ask("Please enter the email for the admin user: ", Config::get("app.admin_email"));
+		if(App::environment() != "testing") {
+			$admin_user = $this->command->ask("Please enter the username for the admin user: ");
+			$admin_email = $this->command->ask("Please enter the email for the admin user: ", Config::get("app.admin_email"));
+		} else {
+			$admin_user = 'user';
+			$admin_email = Config::get("app.admin_email");
+		}
+
 		$users = array(
 			array(
 				'id' => '1',
@@ -45,6 +50,7 @@ class UserSeeder extends Seeder {
 				'displayname' => 'Sarah Lane',
 			)
 		);
+		
 		foreach ($users as $userdata) {
 			User::create($userdata);
 		}

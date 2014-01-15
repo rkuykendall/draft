@@ -3,7 +3,6 @@ class LeagueSeeder extends Seeder {
 
 	public function run() {
 		$this->command->info("Adding leagues...");
-		DB::table("leagues")->delete();
 
 		$leagueData = array();
 		$leagueData['id'] = 1;

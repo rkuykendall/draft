@@ -12,8 +12,8 @@ class AddLeagueStartAndLength extends Migration {
 	public function up()
 	{
 		Schema::table('leagues', function($table) {
-			$table->date('start_date')->after('units');
-			$table->integer('extra_weeks')->after('units');
+			$table->date('start_date')->default('NOW()')->after('units');
+			$table->integer('extra_weeks')->default(Config::get('draft.league_defaults.extra_weeks'))->after('units');
 		});
 		DB::table('leagues')->update(array('extra_weeks' => 4, 'start_date' => '2013-04-19'));
 	}

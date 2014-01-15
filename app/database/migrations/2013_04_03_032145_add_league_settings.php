@@ -14,8 +14,8 @@ class AddLeagueSettings extends Migration {
 	{
 		Schema::table('leagues', function(Blueprint $table)
 		{
-			$table->string('mode', 32)->after('url');
-			$table->string('units', 16)->after('mode');
+			$table->string('mode', 32)->default('bid')->after('url');
+			$table->string('units', 16)->default('₪')->after('mode');
 		});
 	}
 

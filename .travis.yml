@@ -4,7 +4,7 @@ php:
 
 
 install:
-  - composer install
+  - composer install --dev
 
 script:
   - phpunit --coverage-clover=coverage.clover

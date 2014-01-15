@@ -29,7 +29,7 @@ class MovieEarnings extends Migration {
 			$table->foreign('latest_earnings_id')->references('id')->on('movie_earnings')->onUpdate('cascade')->onDelete('set null');
 		});
 		Schema::table('league_user', function(Blueprint $table) {
-			$table->integer('earnings_total')->unsigned()->after('player');
+			$table->integer('earnings_total')->nullable()->unsigned()->after('player');
 		});
 	}
 
