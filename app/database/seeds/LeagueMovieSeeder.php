@@ -2,8 +2,6 @@
 
 class LeagueMovieSeeder extends Seeder {
 	public function run() {
-		$this->command->info("Adding movies to the league...");
-
 		$league = League::find(1);
 		$movies = Movie::all();
 		$wentfor = array(
@@ -12,7 +10,9 @@ class LeagueMovieSeeder extends Seeder {
 			21 => 22, 22 => 9, 23 => 9, 24 => 16, 25 => 10, 26 => 12, 27 => 7, 28 => 7, 29 => 7, 30 => 6
 		);
 		foreach ($movies as $movie) {
-			$league->movies()->attach($movie, array("price" => $wentfor[$movie->id]));
+			$league->movies()->attach($movie, array(
+				"price" => $wentfor[$movie->id], "latest_earnings_id" => $movie->latest_earnings_id
+			));
 		}
 
 	}

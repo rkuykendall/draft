@@ -2,8 +2,6 @@
 
 class MovieSeeder extends Seeder {
 	public function run() {
-		$this->command->info("Adding movies...");
-
 		$movies = array(
 			array("name" => "Oblivion", "boxmojo_id" => "oblivion", "release" => new DateTime("4/19/2013")),
 			array("name" => "Pain and Gain", "boxmojo_id" => "painandgain", "release" => new DateTime("4/26/2013")),

@@ -2,8 +2,6 @@
 class LeagueSeeder extends Seeder {
 
 	public function run() {
-		$this->command->info("Adding leagues...");
-
 		$leagueData = array();
 		$leagueData['id'] = 1;
 		$leagueData['name'] = 'NSFWshow Summer Movie Draft 2013';

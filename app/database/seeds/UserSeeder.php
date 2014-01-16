@@ -2,10 +2,8 @@
 
 class UserSeeder extends Seeder {
 	public function run() {
-		$this->command->info("Adding users...");
-
 		if(App::environment() != "testing") {
-			$admin_user = $this->command->ask("Please enter the username for the admin user: ");
+			$admin_user = $this->command->ask("Please enter the username for the admin user: ", 'user');
 			$admin_email = $this->command->ask("Please enter the email for the admin user: ", Config::get("app.admin_email"));
 		} else {
 			$admin_user = 'user';
