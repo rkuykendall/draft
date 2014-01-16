@@ -15,10 +15,12 @@ class MovieEarningsSeeder extends Seeder {
 
 			$rows[] = array(
 				"movie_id" => $movie_id, "domestic" => $earnings,
-				"date" => $when, "created_at" => $when
+				"date" => $when, "created_at" => $when, "updated_at" => $when
 			);
 		}
-		DB::table('movie_earnings')->insert($rows);
+		foreach (array_chunk($rows, 50) as $chunk) { // sqlite limit
+			DB::table('movie_earnings')->insert($chunk);
+		}
 
 		$latests = DB::table('movie_earnings')->groupBy('movie_id')->lists(DB::raw('max(ID)'), 'movie_id');
 
