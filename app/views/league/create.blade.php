@@ -1,7 +1,4 @@
 <h1>Create league</h1>
-<div class="alert alert-info">
-	<h3>Now featuring 2013 Winter Movie Draft!</h3>
-</div>
 {{ Former::horizontal_open(action("LeagueController@getCreate"))->rules($create_rules) }}
 	{{ Former::token() }}
 	{{ Former::text("name") }}
