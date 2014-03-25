@@ -9,7 +9,7 @@
 	</div>
 	<div class="span4">
 		<div class="alert alert-info">
-			Now featuring 2013 Winter Movie Draft!
+			Now featuring 2014 Summer Movie Draft!
 		</div>
 		<h2>DISCLAIMER DISCLAIMER</h2>
 		<p>This is alpha version 2. That's slightly better than just alpha. It still might break but it seems to not do it (that often). But we have trained monkeys to handle that.</p>
