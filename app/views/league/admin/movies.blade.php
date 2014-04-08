@@ -9,6 +9,8 @@
 </div>
 {{ Former::open()->populate($league) }}
 {{ Former::token() }}
+  <!-- Default Submit on Enter -->
+  <input type="submit" value="Save" class="btn-primary btn" style="visibility: hidden;">
 	<table class="table">
 		<thead>
 			<tr>
